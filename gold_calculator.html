@@ -28,12 +28,7 @@
       --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* ===== ریست و پایه ===== */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Segoe UI', 'Vazir', Tahoma, sans-serif;
@@ -42,26 +37,14 @@
       min-height: 100vh;
       direction: rtl;
       line-height: 1.6;
-      font-size: 17px; /* بزرگتر */
+      font-size: 17px;
     }
 
-    /* ===== اسکرول بار ===== */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--bg);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--gold);
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--orange);
-    }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--orange); }
 
-    /* ===== هدر (بدون گرادیان) ===== */
     .top-bar {
       background: #0a0a0a;
       padding: 18px 32px;
@@ -88,6 +71,13 @@
       box-shadow: 0 0 20px rgba(56, 102, 65, 0.3);
       transition: var(--transition);
       color: #fff;
+      overflow: hidden;
+    }
+    .logo-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
     }
     .logo-circle:hover {
       transform: scale(1.05) rotate(-4deg);
@@ -109,14 +99,8 @@
       opacity: 0.8;
     }
 
-    /* ===== کانتینر ===== */
-    .container {
-      max-width: 920px;
-      margin: 0 auto;
-      padding: 28px 16px 40px;
-    }
+    .container { max-width: 920px; margin: 0 auto; padding: 28px 16px 40px; }
 
-    /* ===== تب‌ها ===== */
     .tabs {
       display: flex;
       gap: 6px;
@@ -148,16 +132,8 @@
       gap: 10px;
     }
 
-    .tab-btn .tab-icon {
-      font-size: 20px;
-      transition: var(--transition);
-    }
-
-    .tab-btn:hover:not(.active) {
-      background: rgba(56, 102, 65, 0.15);
-      color: var(--gold-light);
-    }
-
+    .tab-btn .tab-icon { font-size: 20px; transition: var(--transition); }
+    .tab-btn:hover:not(.active) { background: rgba(56, 102, 65, 0.15); color: var(--gold-light); }
     .tab-btn.active {
       background: var(--gold);
       color: #fff;
@@ -165,32 +141,16 @@
       box-shadow: 0 4px 16px rgba(56, 102, 65, 0.3);
       transform: scale(1.02);
     }
+    .tab-btn.active .tab-icon { transform: scale(1.1); }
 
-    .tab-btn.active .tab-icon {
-      transform: scale(1.1);
-    }
-
-    /* ===== پنل‌ها ===== */
-    .panel {
-      display: none;
-      animation: fadeUp 0.4s ease forwards;
-    }
-    .panel.active {
-      display: block;
-    }
+    .panel { display: none; animation: fadeUp 0.4s ease forwards; }
+    .panel.active { display: block; }
 
     @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(16px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ===== کارت‌ها ===== */
     .card {
       background: var(--card);
       border-radius: var(--radius-lg);
@@ -200,11 +160,7 @@
       border: 1px solid var(--border);
       transition: var(--transition);
     }
-
-    .card:hover {
-      border-color: var(--gold-border);
-      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
-    }
+    .card:hover { border-color: var(--gold-border); box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7); }
 
     .card-title {
       font-size: 18px;
@@ -218,13 +174,8 @@
       gap: 12px;
       letter-spacing: 0.3px;
     }
+    .card-title i { color: var(--orange); font-size: 22px; }
 
-    .card-title i {
-      color: var(--orange);
-      font-size: 22px;
-    }
-
-    /* ===== اطلاعات نوت ===== */
     .info-note {
       background: var(--gold-light);
       border-right: 5px solid var(--gold);
@@ -238,46 +189,20 @@
       align-items: center;
       gap: 12px;
     }
+    .info-note i { color: var(--orange); font-size: 20px; }
 
-    .info-note i {
-      color: var(--orange);
-      font-size: 20px;
-    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 28px; }
+    @media (max-width: 560px) { .form-grid { grid-template-columns: 1fr; } }
 
-    /* ===== فرم ===== */
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px 28px;
-    }
-
-    @media (max-width: 560px) {
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
     .form-group label {
-      font-size: 15px;
-      color: var(--text-muted);
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 15px; color: var(--text-muted); font-weight: 500;
+      display: flex; align-items: center; gap: 8px;
     }
+    .form-group label i { color: var(--gold); font-size: 16px; }
 
-    .form-group label i {
-      color: var(--gold);
-      font-size: 16px;
-    }
-
-    .form-group input {
+    .form-group input,
+    .form-group select {
       padding: 14px 16px;
       border: 1.5px solid var(--border);
       border-radius: var(--radius);
@@ -289,20 +214,15 @@
       transition: var(--transition);
       box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.2);
     }
-
-    .form-group input:focus {
+    .form-group input:focus,
+    .form-group select:focus {
       outline: none;
       border-color: var(--gold);
       background: #2a2a2a;
       box-shadow: 0 0 0 4px rgba(56, 102, 65, 0.15), inset 0 2px 6px rgba(0, 0, 0, 0.2);
     }
+    .form-group input::placeholder { color: #666; font-size: 15px; }
 
-    .form-group input::placeholder {
-      color: #666;
-      font-size: 15px;
-    }
-
-    /* ===== دکمه محاسبه (بدون گرادیان) ===== */
     .calc-btn {
       width: 100%;
       padding: 16px;
@@ -323,35 +243,16 @@
       box-shadow: 0 4px 16px rgba(56, 102, 65, 0.25);
       letter-spacing: 0.3px;
     }
+    .calc-btn i { font-size: 22px; transition: var(--transition); }
+    .calc-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(56, 102, 65, 0.4); background: var(--orange); }
+    .calc-btn:hover i { transform: rotate(12deg) scale(1.1); }
+    .calc-btn:active { transform: translateY(0px); box-shadow: 0 2px 8px rgba(56, 102, 65, 0.3); }
 
-    .calc-btn i {
-      font-size: 22px;
-      transition: var(--transition);
-    }
+    .calc-btn.secondary { background: #242424; border: 1.5px solid var(--gold-border); box-shadow: none; }
+    .calc-btn.secondary:hover { background: var(--gold); box-shadow: 0 4px 16px rgba(56, 102, 65, 0.25); }
 
-    .calc-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(56, 102, 65, 0.4);
-      background: var(--orange);
-    }
-
-    .calc-btn:hover i {
-      transform: rotate(12deg) scale(1.1);
-    }
-
-    .calc-btn:active {
-      transform: translateY(0px);
-      box-shadow: 0 2px 8px rgba(56, 102, 65, 0.3);
-    }
-
-    /* ===== نتایج ===== */
-    .results {
-      display: none;
-      animation: fadeUp 0.4s ease forwards;
-    }
-    .results.show {
-      display: block;
-    }
+    .results { display: none; animation: fadeUp 0.4s ease forwards; }
+    .results.show { display: block; }
 
     .result-cards {
       display: grid;
@@ -359,7 +260,6 @@
       gap: 14px;
       margin-bottom: 20px;
     }
-
     .rcard {
       background: #242424;
       border: 1px solid var(--border);
@@ -368,29 +268,15 @@
       text-align: center;
       transition: var(--transition);
     }
-
     .rcard:hover {
       border-color: var(--gold);
       background: #2a2a2a;
       transform: translateY(-3px);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
     }
+    .rcard .val { font-size: 19px; font-weight: 700; color: var(--text); margin-bottom: 4px; word-break: break-word; }
+    .rcard .lbl { font-size: 14px; color: var(--text-muted); letter-spacing: 0.2px; }
 
-    .rcard .val {
-      font-size: 19px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 4px;
-      word-break: break-word;
-    }
-
-    .rcard .lbl {
-      font-size: 14px;
-      color: var(--text-muted);
-      letter-spacing: 0.2px;
-    }
-
-    /* ===== باکس نهایی (بدون گرادیان) ===== */
     .final-box {
       background: #0a0a0a;
       border-radius: var(--radius-lg);
@@ -403,25 +289,9 @@
       box-shadow: 0 4px 24px rgba(56, 102, 65, 0.15);
       transition: var(--transition);
     }
-
-    .final-box:hover {
-      border-color: var(--orange);
-      box-shadow: 0 4px 32px rgba(243, 91, 4, 0.15);
-    }
-
-    .final-box .lbl {
-      color: var(--gold-light);
-      font-size: 17px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .final-box .lbl i {
-      color: var(--orange);
-    }
-
+    .final-box:hover { border-color: var(--orange); box-shadow: 0 4px 32px rgba(243, 91, 4, 0.15); }
+    .final-box .lbl { color: var(--gold-light); font-size: 17px; font-weight: 500; display: flex; align-items: center; gap: 10px; }
+    .final-box .lbl i { color: var(--orange); }
     .final-box .price {
       color: var(--orange);
       font-size: 30px;
@@ -430,7 +300,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* ===== بخش نمودار ===== */
     .chart-section {
       background: var(--card);
       border-radius: var(--radius-lg);
@@ -439,66 +308,16 @@
       border: 1px solid var(--border);
       transition: var(--transition);
     }
+    .chart-section:hover { border-color: var(--gold-border); }
+    .chart-title { font-size: 17px; color: var(--text-muted); margin-bottom: 16px; font-weight: 600; display: flex; align-items: center; gap: 12px; }
+    .chart-title i { color: var(--gold); }
 
-    .chart-section:hover {
-      border-color: var(--gold-border);
-    }
+    .legend { display: flex; flex-wrap: wrap; gap: 14px 24px; margin-bottom: 16px; font-size: 15px; color: var(--text-muted); }
+    .legend span { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.03); padding: 6px 16px 6px 10px; border-radius: 20px; border: 1px solid var(--border); }
+    .leg-dot { width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0; }
+    .chart-wrap { position: relative; height: 260px; background: rgba(0, 0, 0, 0.2); border-radius: var(--radius); padding: 10px; }
 
-    .chart-title {
-      font-size: 17px;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .chart-title i {
-      color: var(--gold);
-    }
-
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px 24px;
-      margin-bottom: 16px;
-      font-size: 15px;
-      color: var(--text-muted);
-    }
-
-    .legend span {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.03);
-      padding: 6px 16px 6px 10px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-    }
-
-    .leg-dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
-      flex-shrink: 0;
-    }
-
-    .chart-wrap {
-      position: relative;
-      height: 260px;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: var(--radius);
-      padding: 10px;
-    }
-
-    /* ===== گروه عیار ===== */
-    .karat-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
+    .karat-group { display: flex; flex-wrap: wrap; gap: 12px; }
     .karat-btn {
       display: flex;
       flex-direction: column;
@@ -516,23 +335,9 @@
       text-align: center;
       min-width: 80px;
     }
-
-    .karat-btn input[type="radio"] {
-      display: none;
-    }
-
-    .karat-btn .coin-name {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .karat-btn .coin-sub {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
+    .karat-btn input[type="radio"] { display: none; }
+    .karat-btn .coin-name { font-size: 15px; font-weight: 600; color: var(--text); }
+    .karat-btn .coin-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
     .karat-btn.active {
       background: var(--gold);
       color: #fff;
@@ -540,26 +345,11 @@
       box-shadow: 0 4px 20px rgba(56, 102, 65, 0.3);
       transform: scale(1.03);
     }
+    .karat-btn.active .coin-name { color: #fff; }
+    .karat-btn.active .coin-sub { color: rgba(255, 255, 255, 0.85); }
+    .karat-btn:hover:not(.active) { border-color: var(--gold); background: rgba(56, 102, 65, 0.12); color: var(--gold-light); }
+    .karat-btn:hover:not(.active) .coin-name { color: var(--gold-light); }
 
-    .karat-btn.active .coin-name {
-      color: #fff;
-    }
-
-    .karat-btn.active .coin-sub {
-      color: rgba(255, 255, 255, 0.85);
-    }
-
-    .karat-btn:hover:not(.active) {
-      border-color: var(--gold);
-      background: rgba(56, 102, 65, 0.12);
-      color: var(--gold-light);
-    }
-
-    .karat-btn:hover:not(.active) .coin-name {
-      color: var(--gold-light);
-    }
-
-    /* ===== اطلاعات عیار ===== */
     .karat-info {
       margin-top: 12px;
       font-size: 14px;
@@ -569,92 +359,163 @@
       padding: 10px 18px;
       border-right: 3px solid var(--gold);
     }
+    .karat-info b { color: var(--orange); }
 
-    .karat-info b {
-      color: var(--orange);
+    /* ===== سوییچ (toggle) برای نگین/مینا/فنر ===== */
+    .toggle-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .toggle-btn {
+      flex: 1;
+      min-width: 110px;
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border);
+      background: #242424;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      text-align: center;
+      transition: var(--transition);
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
+    .toggle-btn input { display: none; }
+    .toggle-btn.active {
+      background: var(--orange);
+      color: #fff;
+      border-color: var(--orange);
+      box-shadow: 0 4px 16px rgba(243, 91, 4, 0.3);
+    }
+    .toggle-btn:hover:not(.active) { border-color: var(--orange); color: var(--orange-light); }
 
-    /* ===== ریسپانسیو ===== */
+    .conditional-fields {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, opacity 0.3s ease, margin 0.3s ease;
+      opacity: 0;
+    }
+    .conditional-fields.show { max-height: 600px; opacity: 1; margin-top: 16px; }
+
+    /* ===== فاکتور ===== */
+    .invoice-box {
+      background: #fff;
+      color: #111;
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      box-shadow: var(--shadow);
+    }
+    .invoice-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid var(--gold);
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+    .invoice-header h2 { color: var(--gold); font-size: 22px; }
+    .invoice-header .inv-meta { text-align: left; font-size: 13px; color: #555; }
+    .invoice-table { width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 14px; }
+    .invoice-table th, .invoice-table td { border: 1px solid #ddd; padding: 8px 10px; text-align: right; }
+    .invoice-table th { background: var(--gold-light); color: var(--gold-dark); font-weight: 700; }
+    .invoice-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--gold-dark);
+      color: #fff;
+      padding: 16px 22px;
+      border-radius: var(--radius);
+      font-size: 20px;
+      font-weight: 800;
+    }
+    .invoice-total .price { color: var(--orange-light); }
+
     @media (max-width: 700px) {
-      .top-bar {
-        flex-wrap: wrap;
-        padding: 14px 18px;
-      }
-      .top-bar h1 {
-        font-size: 24px;
-      }
-      .container {
-        padding: 16px 10px;
-      }
-      .card {
-        padding: 20px 18px;
-      }
-      .final-box {
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
-      }
-      .final-box .price {
-        font-size: 26px;
-      }
-      .result-cards {
-        grid-template-columns: 1fr 1fr;
-      }
-      .tab-btn {
-        font-size: 14px;
-        padding: 10px 8px;
-        min-width: 60px;
-      }
-      .tab-btn .tab-icon {
-        font-size: 17px;
-      }
+      .top-bar { flex-wrap: wrap; padding: 14px 18px; }
+      .top-bar h1 { font-size: 24px; }
+      .container { padding: 16px 10px; }
+      .card { padding: 20px 18px; }
+      .final-box { flex-direction: column; gap: 10px; text-align: center; }
+      .final-box .price { font-size: 26px; }
+      .result-cards { grid-template-columns: 1fr 1fr; }
+      .tab-btn { font-size: 14px; padding: 10px 8px; min-width: 60px; }
+      .tab-btn .tab-icon { font-size: 17px; }
+      .invoice-box { padding: 18px 16px; }
     }
 
     @media (max-width: 480px) {
-      .result-cards {
-        grid-template-columns: 1fr;
-      }
-      .top-bar h1 {
-        font-size: 20px;
-      }
-      .logo-circle {
-        width: 50px;
-        height: 50px;
-        font-size: 26px;
-      }
-      .final-box .price {
-        font-size: 22px;
-      }
-      .chart-wrap {
-        height: 200px;
-      }
+      .result-cards { grid-template-columns: 1fr; }
+      .top-bar h1 { font-size: 20px; }
+      .logo-circle { width: 50px; height: 50px; font-size: 26px; }
+      .final-box .price { font-size: 22px; }
+      .chart-wrap { height: 200px; }
     }
 
-    /* ===== انیمیشن ===== */
     @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(56, 102, 65, 0.3);
-      }
-      70% {
-        box-shadow: 0 0 0 10px rgba(56, 102, 65, 0);
-      }
-      100% {
-        box-shadow: 0 0 0 0 rgba(56, 102, 65, 0);
-      }
+      0% { box-shadow: 0 0 0 0 rgba(56, 102, 65, 0.3); }
+      70% { box-shadow: 0 0 0 10px rgba(56, 102, 65, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(56, 102, 65, 0); }
     }
+    .final-box .price { animation: pulse 2s infinite; }
+    .karat-btn.active { animation: fadeUp 0.3s ease; }
 
-    .final-box .price {
-      animation: pulse 2s infinite;
+    /* ===== اصلاح پرینت ===== */
+    @media print {
+      body { background: #fff !important; }
+      .top-bar, .tabs, .card, .calc-btn, .chart-section, .info-note { display: none !important; }
+      .container { max-width: 100%; padding: 0; margin: 0; }
+      .panel { display: none !important; }
+      .panel.active { display: block !important; }
+      .results { display: block !important; }  /* همیشه نمایش داده شود */
+      .print-logo-header { display: flex !important; }
+      .invoice-box {
+        box-shadow: none !important;
+        border: 1px solid #ccc;
+        padding: 16px 24px;
+      }
+      .invoice-total .price {
+        animation: none !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      /* اطمینان از نمایش فاکتور */
+      #res-invoice { display: block !important; }
     }
-    .karat-btn.active {
-      animation: fadeUp 0.3s ease;
+    .print-logo-header {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+    }
+    .print-logo-header img {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      margin-bottom: 8px;
+    }
+    .print-logo-header .shop-name {
+      color: var(--gold);
+      font-size: 20px;
+      font-weight: 800;
+    }
+    .print-logo-header .shop-sub {
+      color: #777;
+      font-size: 12px;
+      margin-top: 2px;
     }
   </style>
 </head>
 <body>
 
   <div class="top-bar">
-    <div class="logo-circle">💎</div>
+    <div class="logo-circle">
+      <img id="shopLogo" src="" alt="لوگو">
+    </div>
     <div>
       <h1>محاسبه گر طلا و سکه داور</h1>
       <p>قیمت‌گذاری حرفه‌ای برای طلافروشی</p>
@@ -677,6 +538,9 @@
       </button>
       <button class="tab-btn" onclick="switchTab('parsian',this)">
         <span class="tab-icon">🏅</span> سکه پارسیان
+      </button>
+      <button class="tab-btn" onclick="switchTab('invoice',this)">
+        <span class="tab-icon">🧾</span> فاکتور
       </button>
     </div>
 
@@ -747,6 +611,8 @@
             <label class="karat-btn"><input type="radio" name="u-karat" value="740"> عیار ۷۴۰</label>
             <label class="karat-btn"><input type="radio" name="u-karat" value="735"> عیار ۷۳۵</label>
             <label class="karat-btn"><input type="radio" name="u-karat" value="730"> عیار ۷۳۰</label>
+            <!-- اضافه کردن عیار ۱۷ (۷۰۸) -->
+            <label class="karat-btn"><input type="radio" name="u-karat" value="708"> عیار ۱۷ (۷۰۸)</label>
           </div>
           <div id="u-karat-info" class="karat-info">
             ضریب تبدیل: <b id="u-ratio-txt">۱.۰۰۰۰</b> — قیمت هر گرم به عیار انتخابی تعدیل می‌شود
@@ -966,6 +832,178 @@
       </div>
     </div>
 
+    <!-- TAB: فاکتور -->
+    <div id="tab-invoice" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fas fa-file-invoice"></i> صدور فاکتور طلای نو</div>
+        <div class="info-note">
+          <i class="fas fa-info-circle"></i>
+          مشخصات کامل قطعه طلا را وارد کنید — هر بخش جداگانه در فاکتور محاسبه و نمایش داده می‌شود.
+        </div>
+
+        <!-- اطلاعات مشتری و کالا -->
+        <div class="form-grid">
+          <div class="form-group">
+            <label><i class="fas fa-user"></i> نام مشتری</label>
+            <input type="text" id="inv-customer" placeholder="مثال: آقای محمدی">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-box"></i> نام / مشخصات طلا</label>
+            <input type="text" id="inv-itemname" placeholder="مثال: دستبند طرح فلامینگو">
+          </div>
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:22px 0;">
+
+        <!-- عیار طلا -->
+        <div style="margin-bottom:16px;">
+          <div style="font-size:15px;color:var(--text-muted);margin-bottom:10px;"><i class="fas fa-stamp"></i> عیار طلا:</div>
+          <div class="karat-group">
+            <label class="karat-btn active"><input type="radio" name="inv-karat" value="750" checked> عیار ۱۸ (۷۵۰)</label>
+            <label class="karat-btn"><input type="radio" name="inv-karat" value="708"> عیار ۱۷ (۷۰۸)</label>
+            <label class="karat-btn"><input type="radio" name="inv-karat" value="900"> عیار ۲۱.۶ (۹۰۰)</label>
+            <label class="karat-btn"><input type="radio" name="inv-karat" value="999"> عیار ۲۴ (۹۹۹)</label>
+            <label class="karat-btn"><input type="radio" name="inv-karat" value="740"> عیار ۷۴۰</label>
+          </div>
+        </div>
+
+        <!-- وزن کلی -->
+        <div class="form-grid">
+          <div class="form-group">
+            <label><i class="fas fa-tag"></i> قیمت هر گرم طلا (تومان)</label>
+            <input type="text" id="inv-gprice" data-type="int" value="4,500,000" placeholder="مثال: 4,500,000" class="num-input">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-weight-scale"></i> وزن کل قطعه (گرم)</label>
+            <input type="text" id="inv-totalweight" data-type="float" value="10" placeholder="مثال: 10" class="num-input">
+          </div>
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:22px 0;">
+
+        <!-- نگین -->
+        <div style="margin-bottom:16px;">
+          <div style="font-size:15px;color:var(--text-muted);margin-bottom:10px;"><i class="fas fa-gem"></i> نگین‌دار بودن:</div>
+          <div class="toggle-group">
+            <label class="toggle-btn" id="stoneNoBtn" onclick="setToggle('stone', false)"><input type="radio" name="inv-stone"> بدون نگین</label>
+            <label class="toggle-btn active" id="stoneYesBtn" onclick="setToggle('stone', true)"><input type="radio" name="inv-stone" checked> دارای نگین</label>
+          </div>
+          <div class="conditional-fields show" id="stoneFields">
+            <div class="form-grid">
+              <div class="form-group">
+                <label><i class="fas fa-weight-hanging"></i> وزن نگین‌ها (گرم / قیراط)</label>
+                <input type="text" id="inv-stoneweight" data-type="float" value="0.5" placeholder="مثال: 0.5" class="num-input">
+              </div>
+              <div class="form-group">
+                <label><i class="fas fa-money-bill"></i> قیمت نگین (تومان)</label>
+                <input type="text" id="inv-stoneprice" data-type="int" value="500,000" placeholder="مثال: 500,000" class="num-input">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- مینا کاری -->
+        <div style="margin-bottom:16px;">
+          <div style="font-size:15px;color:var(--text-muted);margin-bottom:10px;"><i class="fas fa-palette"></i> مینا کاری:</div>
+          <div class="toggle-group">
+            <label class="toggle-btn active" id="enamelNoBtn" onclick="setToggle('enamel', false)"><input type="radio" name="inv-enamel" checked> بدون مینا</label>
+            <label class="toggle-btn" id="enamelYesBtn" onclick="setToggle('enamel', true)"><input type="radio" name="inv-enamel"> دارای مینا</label>
+          </div>
+          <div class="conditional-fields" id="enamelFields">
+            <div class="form-grid">
+              <div class="form-group">
+                <label><i class="fas fa-weight-hanging"></i> وزن مینا (گرم)</label>
+                <input type="text" id="inv-enamelweight" data-type="float" value="0.3" placeholder="مثال: 0.3" class="num-input">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- فنر -->
+        <div style="margin-bottom:16px;">
+          <div style="font-size:15px;color:var(--text-muted);margin-bottom:10px;"><i class="fas fa-link"></i> فنر / زنجیر:</div>
+          <div class="toggle-group">
+            <label class="toggle-btn active" id="springNoBtn" onclick="setToggle('spring', false)"><input type="radio" name="inv-spring" checked> بدون فنر</label>
+            <label class="toggle-btn" id="springYesBtn" onclick="setToggle('spring', true)"><input type="radio" name="inv-spring"> دارای فنر</label>
+          </div>
+          <div class="conditional-fields" id="springFields">
+            <div class="form-grid">
+              <div class="form-group">
+                <label><i class="fas fa-weight-hanging"></i> وزن فنر (گرم)</label>
+                <input type="text" id="inv-springweight" data-type="float" value="0.3" placeholder="مثال: 0.3" class="num-input">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:22px 0;">
+
+        <!-- اجرت و سود و مالیات -->
+        <div class="form-grid">
+          <div class="form-group">
+            <label><i class="fas fa-percent"></i> درصد سود سازنده / اجرت (%)</label>
+            <input type="text" id="inv-making" data-type="float" value="7" placeholder="مثال: 7" class="num-input">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-percent"></i> درصد سود فروشنده (%)</label>
+            <input type="text" id="inv-profit" data-type="float" value="3" placeholder="مثال: 3" class="num-input">
+          </div>
+        </div>
+
+        <button class="calc-btn" onclick="calcInvoice()"><i class="fas fa-file-invoice-dollar"></i> صدور فاکتور</button>
+      </div>
+
+      <!-- نتیجه فاکتور -->
+      <div id="res-invoice" class="results">
+        <div class="invoice-box" id="invoicePrintArea">
+          <div class="print-logo-header">
+            <img id="printLogo" src="" alt="لوگو">
+            <div class="shop-name">جواهری داور</div>
+            <div class="shop-sub">۱۴۰۵ خورشیدی</div>
+          </div>
+          <div class="invoice-header">
+            <div>
+              <h2><i class="fas fa-gem"></i> فاکتور طلا و جواهر داور</h2>
+              <div style="font-size:13px;color:#666;margin-top:4px;">مشتری: <b id="inv-out-customer">—</b></div>
+            </div>
+            <div class="inv-meta">
+              تاریخ: <span id="inv-out-date">—</span><br>
+              کالا: <b id="inv-out-itemname">—</b>
+            </div>
+          </div>
+
+          <table class="invoice-table">
+            <thead>
+              <tr>
+                <th>شرح</th>
+                <th>وزن (گرم)</th>
+                <th>توضیحات</th>
+                <th>مبلغ (تومان)</th>
+              </tr>
+            </thead>
+            <tbody id="inv-table-body">
+              <!-- ردیف‌ها با JS اضافه می‌شوند -->
+            </tbody>
+          </table>
+
+          <div class="invoice-total">
+            <span><i class="fas fa-coins"></i> مبلغ نهایی قابل پرداخت</span>
+            <span class="price" id="inv-final">—</span>
+          </div>
+        </div>
+
+        <div class="chart-section" style="margin-top:20px;">
+          <div class="chart-title"><i class="fas fa-chart-pie"></i> ترکیب اجزای فاکتور</div>
+          <div class="legend" id="inv-legend"></div>
+          <div class="chart-wrap"><canvas id="chartInvoice"></canvas></div>
+        </div>
+
+        <button class="calc-btn secondary" onclick="window.print()" style="margin-top:16px;">
+          <i class="fas fa-print"></i> چاپ فاکتور
+        </button>
+      </div>
+    </div>
+
   </div>
 
   <script>
@@ -992,6 +1030,16 @@
       const newPos = Math.max(0, cursorPos + diff);
       el.setSelectionRange(newPos, newPos);
     }
+
+
+    // ─── لوگوی فروشگاه (Base64 جاسازی‌شده) ──────────
+    const SHOP_LOGO_DATA = "data:image/jpeg;base64,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";
+    document.addEventListener('DOMContentLoaded', function() {
+      const headerLogo = document.getElementById('shopLogo');
+      if (headerLogo) headerLogo.src = SHOP_LOGO_DATA;
+      const printLogo = document.getElementById('printLogo');
+      if (printLogo) printLogo.src = SHOP_LOGO_DATA;
+    });
 
     function getVal(id) {
       return parseFloat(document.getElementById(id).value.replace(/,/g, '')) || 0;
@@ -1094,6 +1142,15 @@
             `${nameEl.textContent} — ${subEl.textContent}`;
         });
       });
+
+      // عیار فاکتور
+      document.querySelectorAll('input[name="inv-karat"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+          document.querySelectorAll('input[name="inv-karat"]').forEach(r =>
+            r.parentElement.classList.remove('active'));
+          this.parentElement.classList.add('active');
+        });
+      });
     });
 
     function getSelectedKarat() {
@@ -1107,6 +1164,10 @@
     function getSelectedParWt() {
       const r = document.querySelector('input[name="par-wt"]:checked');
       return r ? parseFloat(r.value) : 0.05;
+    }
+    function getSelectedInvKarat() {
+      const r = document.querySelector('input[name="inv-karat"]:checked');
+      return r ? parseInt(r.value) : 750;
     }
 
     // ─── دست دوم ────────────────────────────────────
@@ -1174,7 +1235,123 @@
         ['ارزش طلا', 'حق ضرب'],
         ['#386641', '#F35B04'], 'p-legend');
     }
-  </script>
 
+    // ─── فاکتور: toggle ها (نگین/مینا/فنر) ──────────
+    const toggleState = { stone: true, enamel: false, spring: false };
+
+    function setToggle(name, value) {
+      toggleState[name] = value;
+      const yesBtn = document.getElementById(name + 'YesBtn');
+      const noBtn  = document.getElementById(name + 'NoBtn');
+      const fields = document.getElementById(name + 'Fields');
+      if (value) {
+        yesBtn.classList.add('active');
+        noBtn.classList.remove('active');
+        fields.classList.add('show');
+      } else {
+        noBtn.classList.add('active');
+        yesBtn.classList.remove('active');
+        fields.classList.remove('show');
+      }
+    }
+
+    // ─── محاسبه فاکتور کامل ─────────────────────────
+    function calcInvoice() {
+      const customer   = document.getElementById('inv-customer').value.trim() || '—';
+      const itemName   = document.getElementById('inv-itemname').value.trim() || '—';
+      const karat      = getSelectedInvKarat();
+      const gp         = getVal('inv-gprice');
+      const totalWt    = getVal('inv-totalweight');
+      const mk         = getVal('inv-making');
+      const pr         = getVal('inv-profit');
+
+      // تعدیل قیمت بر اساس عیار (مبنا ۷۵۰)
+      const adjGp = gp * (karat / 750);
+
+      // نگین، مینا و فنر — وزنشان از وزن خالص طلا کسر می‌شود
+      let stoneWt = 0, stonePrice = 0;
+      let enamelWt = 0;
+      let springWt = 0;
+
+      if (toggleState.stone) {
+        stoneWt    = getVal('inv-stoneweight');
+        stonePrice = getVal('inv-stoneprice');
+      }
+      if (toggleState.enamel) {
+        enamelWt = getVal('inv-enamelweight');
+      }
+      if (toggleState.spring) {
+        springWt = getVal('inv-springweight');
+      }
+
+      const netGoldWeight = Math.max(totalWt - stoneWt - enamelWt - springWt, 0);
+
+      // محاسبه طلای خالص (مشابه طلای نو)
+      const goldBase    = adjGp * netGoldWeight;
+      const makerProfit = goldBase * mk / 100;
+      const sellerProfit= goldBase * pr / 100;
+      const tax         = 0.10 * (makerProfit + sellerProfit);
+      const goldSubtotal= goldBase + makerProfit + sellerProfit + tax;
+
+      // ارزش طلای فنر و مینا (به قیمت پایه، بدون اجرت/سود/مالیات جدا)
+      const springCost = springWt > 0 ? adjGp * springWt : 0;
+      const enamelCost = enamelWt > 0 ? adjGp * enamelWt : 0;
+
+      const finalTotal = goldSubtotal + stonePrice + enamelCost + springCost;
+
+      // ─ ساخت ردیف‌های جدول فاکتور ─
+      const rows = [];
+      rows.push(['طلای خالص', netGoldWeight.toFixed(3) + ' گرم', `عیار ${karat}`, fmt(goldBase)]);
+      rows.push(['اجرت / سود سازنده', '—', mk + '%', fmt(makerProfit)]);
+      rows.push(['سود فروشنده', '—', pr + '%', fmt(sellerProfit)]);
+      rows.push(['مالیات', '—', '۱۰٪ روی سودها', fmt(tax)]);
+      if (toggleState.stone) {
+        rows.push(['نگین', stoneWt.toFixed(3) + ' گرم/قیراط', 'دارای نگین', fmt(stonePrice)]);
+      } else {
+        rows.push(['نگین', '—', 'بدون نگین', fmt(0)]);
+      }
+      if (toggleState.enamel) {
+        rows.push(['مینا کاری', enamelWt.toFixed(3) + ' گرم', 'دارای مینا', fmt(enamelCost)]);
+      } else {
+        rows.push(['مینا کاری', '—', 'بدون مینا', fmt(0)]);
+      }
+      if (toggleState.spring) {
+        rows.push(['فنر / زنجیر', springWt.toFixed(3) + ' گرم', 'دارای فنر', fmt(springCost)]);
+      } else {
+        rows.push(['فنر / زنجیر', '—', 'بدون فنر', fmt(0)]);
+      }
+
+      // ─ پر کردن جدول ─
+      const tbody = document.getElementById('inv-table-body');
+      tbody.innerHTML = rows.map(r =>
+        `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`
+      ).join('');
+
+      document.getElementById('inv-out-customer').textContent = customer;
+      document.getElementById('inv-out-itemname').textContent = itemName;
+      document.getElementById('inv-out-date').textContent = new Date().toLocaleDateString('fa-IR');
+      document.getElementById('inv-final').textContent = fmt(finalTotal);
+
+      document.getElementById('res-invoice').classList.add('show');
+
+      // ─ نمودار ترکیب اجزای فاکتور ─
+      const chartData   = [goldBase, makerProfit, sellerProfit, tax];
+      const chartLabels = ['طلای خالص', 'اجرت', 'سود فروشنده', 'مالیات'];
+      const chartColors = ['#386641', '#6B9FD4', '#6DC47B', '#E47D7D'];
+      if (toggleState.stone && stonePrice > 0) {
+        chartData.push(stonePrice); chartLabels.push('نگین'); chartColors.push('#9B59B6');
+      }
+      if (toggleState.enamel && enamelCost > 0) {
+        chartData.push(enamelCost); chartLabels.push('مینا کاری'); chartColors.push('#F35B04');
+      }
+      if (toggleState.spring && springCost > 0) {
+        chartData.push(springCost); chartLabels.push('فنر/زنجیر'); chartColors.push('#FFD700');
+      }
+      makePie('chartInvoice', chartData, chartLabels, chartColors, 'inv-legend');
+    }
+
+    // ─── چاپ فاکتور ──────────────────────────────────
+    // تابع print در onclick مستقیم استفاده شده، نیازی به تابع جدا نیست.
+  </script>
 </body>
 </html>
