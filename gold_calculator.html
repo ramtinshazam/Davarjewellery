@@ -1,582 +1,735 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl" data-theme="dark">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>محاسبه‌گر طلا و سکه داور</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-  <!-- فونت رسمی وزیرمتن -->
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --green: #3d7a4e;
-      --green-dark: #2a5636;
-      --green-glow: rgba(61,122,78,0.25);
-      --orange: #e85d04;
-      --orange-light: #f77f00;
-      --orange-glow: rgba(232,93,4,0.2);
+  /* ───────────────────────────────────────────────
+     DAAVAR GOLD CALCULATOR · 2026 DESIGN SYSTEM
+     Palette: deep obsidian · liquid gold · ember
+  ─────────────────────────────────────────────── */
+  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
 
-      /* dark mode defaults */
-      --bg: #0c0c0f;
-      --bg2: #131318;
-      --card: #18181f;
-      --card2: #1f1f28;
-      --border: rgba(255,255,255,0.07);
-      --border-accent: rgba(61,122,78,0.45);
-      --text: #eeeef2;
-      --text-muted: #888898;
-      --text-dim: #555566;
-      --shadow: 0 8px 40px rgba(0,0,0,0.55);
-      --shadow-sm: 0 2px 12px rgba(0,0,0,0.35);
-      --radius: 10px;
-      --radius-lg: 16px;
-      --transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
-      --input-bg: #222230;
-      --input-border: rgba(255,255,255,0.1);
-      --result-bg: #111118;
-      --rcard-bg: #1c1c26;
-    }
+  :root {
+    /* Signature palette */
+    --gold:          #4a7c59;
+    --gold-bright:   #5a9c6e;
+    --gold-glow:     rgba(74,124,89,0.22);
+    --gold-border:   rgba(74,124,89,0.35);
+    --ember:         #e8590c;
+    --ember-glow:    rgba(232,89,12,0.2);
 
-    [data-theme="light"] {
-      --bg: #f0f2f5;
-      --bg2: #e8eaed;
-      --card: #ffffff;
-      --card2: #f7f8fa;
-      --border: rgba(0,0,0,0.08);
-      --border-accent: rgba(61,122,78,0.35);
-      --text: #1a1a2e;
-      --text-muted: #5a5a72;
-      --text-dim: #9999aa;
-      --shadow: 0 4px 24px rgba(0,0,0,0.1);
-      --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
-      --input-bg: #f4f5f8;
-      --input-border: rgba(0,0,0,0.12);
-      --result-bg: #f0f2f5;
-      --rcard-bg: #f4f5f8;
-    }
+    /* Dark mode */
+    --bg:            #080b09;
+    --bg2:           #0d110f;
+    --surface:       #111510;
+    --surface2:      #161c14;
+    --surface3:      #1b2319;
+    --border:        rgba(255,255,255,0.055);
+    --border-gold:   rgba(74,124,89,0.28);
+    --text:          #e8ede9;
+    --text-2:        #aab8ac;
+    --text-3:        #637065;
+    --glow-shadow:   0 0 40px rgba(74,124,89,0.12);
+    --card-shadow:   0 4px 24px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.04) inset;
+    --radius:        14px;
+    --radius-lg:     20px;
+    --radius-xl:     28px;
+    --ease:          cubic-bezier(0.22,1,0.36,1);
+    --topbar-bg:     #060908;
+    --input-bg:      #0f1410;
+    --input-focus:   #141a12;
+    --rcard-bg:      #0f1410;
+    --final-bg:      #060908;
+    --info-bg:       rgba(74,124,89,0.08);
+    --info-border:   rgba(74,124,89,0.4);
+  }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+  [data-theme="light"] {
+    --bg:            #f0f4f1;
+    --bg2:           #e8ede9;
+    --surface:       #ffffff;
+    --surface2:      #f6f9f7;
+    --surface3:      #edf2ef;
+    --border:        rgba(0,0,0,0.07);
+    --border-gold:   rgba(74,124,89,0.25);
+    --text:          #0f1a12;
+    --text-2:        #4a6350;
+    --text-3:        #8fa894;
+    --glow-shadow:   0 0 40px rgba(74,124,89,0.08);
+    --card-shadow:   0 4px 24px rgba(0,0,0,0.07), 0 1px 0 rgba(255,255,255,0.8) inset;
+    --topbar-bg:     #ffffff;
+    --input-bg:      #f0f4f1;
+    --input-focus:   #e8ede9;
+    --rcard-bg:      #f0f4f1;
+    --final-bg:      #ffffff;
+    --info-bg:       rgba(74,124,89,0.07);
+    --info-border:   rgba(74,124,89,0.35);
+  }
 
-    body {
-      font-family: 'Vazirmatn', 'Segoe UI', 'Tahoma', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      direction: rtl;
-      line-height: 1.65;
-      font-size: 15px;
-      transition: background 0.3s, color 0.3s;
-    }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 10px; }
+  body {
+    font-family: 'Vazirmatn', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    direction: rtl;
+    line-height: 1.6;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.4s var(--ease), color 0.4s var(--ease);
+    display: flex;
+    flex-direction: column;
+  }
 
-    /* ─── TOP BAR ─── */
-    .top-bar {
-      background: var(--card);
-      border-bottom: 1px solid var(--border-accent);
-      padding: 0 28px;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      position: sticky;
-      top: 0;
-      z-index: 200;
-      box-shadow: var(--shadow-sm);
-      transition: background 0.3s, border-color 0.3s;
-    }
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--gold-border); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
 
-    .top-bar-title { flex: 1; }
-    .top-bar-title h1 {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: 0.3px;
-    }
-    .top-bar-title p { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+  /* ── Layout ── */
+  .app-body { display: flex; flex: 1; min-height: 0; }
+  .main-content { flex: 1; overflow-y: auto; min-width: 0; }
 
-    /* ─── THEME TOGGLE ─── */
-    .theme-toggle {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--card2);
-      border: 1px solid var(--border);
-      border-radius: 30px;
-      padding: 5px 14px 5px 6px;
-      cursor: pointer;
-      transition: var(--transition);
-      user-select: none;
-      color: var(--text-muted);
-      font-size: 13px;
-      font-weight: 500;
-    }
-    .theme-toggle:hover { border-color: var(--green); color: var(--text); }
+  /* ─────────────────────────────────────────
+     TOP BAR
+  ───────────────────────────────────────── */
+  .top-bar {
+    background: var(--topbar-bg);
+    padding: 0 28px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid var(--border-gold);
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    box-shadow: 0 1px 0 var(--border-gold), 0 4px 32px rgba(0,0,0,0.4);
+  }
 
-    .toggle-track {
-      width: 36px;
-      height: 20px;
-      background: var(--input-bg);
-      border-radius: 10px;
-      position: relative;
-      border: 1px solid var(--border);
-      transition: var(--transition);
-    }
-    [data-theme="light"] .toggle-track { background: var(--green); border-color: var(--green); }
+  .top-bar h1 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.2px;
+  }
+  .top-bar h1 span { color: var(--ember); }
+  .top-bar p { font-size: 11.5px; color: var(--text-3); margin-top: 1px; letter-spacing: 0.3px; }
+  .top-bar-spacer { flex: 1; }
 
-    .toggle-thumb {
-      width: 14px;
-      height: 14px;
-      background: var(--text-muted);
-      border-radius: 50%;
-      position: absolute;
-      top: 2px;
-      right: 3px;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 8px;
-    }
-    [data-theme="light"] .toggle-thumb {
-      right: auto;
-      left: 3px;
-      background: #fff;
-    }
+  /* ── Theme toggle — pill style ── */
+  .theme-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px 7px 10px;
+    border-radius: 99px;
+    border: 1px solid var(--border-gold);
+    background: var(--surface2);
+    color: var(--text-2);
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.25s var(--ease);
+    flex-shrink: 0;
+    letter-spacing: 0.2px;
+  }
+  .theme-toggle-btn i { font-size: 14px; color: var(--gold); transition: transform 0.4s var(--ease); }
+  .theme-toggle-btn:hover { border-color: var(--gold); color: var(--text); background: var(--surface3); }
+  .theme-toggle-btn:hover i { transform: rotate(20deg); }
 
-    /* ─── CONTAINER ─── */
-    .container { max-width: 940px; margin: 0 auto; padding: 24px 16px 56px; }
+  /* ─────────────────────────────────────────
+     SIDEBAR
+  ───────────────────────────────────────── */
+  .sidebar {
+    width: 148px;
+    flex-shrink: 0;
+    background: var(--topbar-bg);
+    border-left: 1px solid var(--border-gold);
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px;
+    gap: 3px;
+    position: sticky;
+    top: 60px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    z-index: 90;
+  }
 
-    /* ─── TABS ─── */
-    .tabs {
-      display: flex;
-      gap: 4px;
-      background: var(--card);
-      border-radius: var(--radius-lg);
-      padding: 5px;
-      margin-bottom: 20px;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border);
-      flex-wrap: wrap;
-      overflow: hidden;
-    }
+  .sidebar-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-3);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 0 8px 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 6px;
+  }
 
-    .tab-btn {
-      flex: 1;
-      min-width: 76px;
-      padding: 10px 8px;
-      border: none;
-      background: transparent;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-muted);
-      font-family: inherit;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
-    .tab-btn .tab-icon { font-size: 15px; }
-    .tab-btn:hover:not(.active) { background: var(--card2); color: var(--text); }
-    .tab-btn.active {
-      background: linear-gradient(135deg, var(--green-dark), var(--green));
-      color: #fff;
-      font-weight: 600;
-      box-shadow: 0 2px 10px var(--green-glow);
-    }
+  .tabs { display: none; }
 
-    /* ─── PANEL ─── */
-    .panel { display: none; animation: fadeUp 0.3s ease forwards; }
-    .panel.active { display: block; }
+  .tab-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    padding: 11px 8px;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s var(--ease);
+    position: relative;
+    overflow: hidden;
+  }
+  .tab-btn .tab-icon { font-size: 19px; transition: transform 0.3s var(--ease); }
+  .tab-btn .tab-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-3);
+    letter-spacing: 0.2px;
+    transition: color 0.2s;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .tab-btn:hover:not(.active) {
+    background: var(--surface2);
+  }
+  .tab-btn:hover:not(.active) .tab-label { color: var(--text-2); }
+  .tab-btn:hover:not(.active) .tab-icon { transform: translateY(-1px); }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+  .tab-btn.active {
+    background: var(--gold);
+    box-shadow: 0 4px 16px var(--gold-glow), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  .tab-btn.active .tab-label { color: rgba(255,255,255,0.92); }
+  .tab-btn.active .tab-icon { transform: scale(1.08); }
 
-    /* ─── CARD ─── */
-    .card {
-      background: var(--card);
-      border-radius: var(--radius-lg);
-      padding: 24px 28px;
-      box-shadow: var(--shadow-sm);
-      margin-bottom: 16px;
-      border: 1px solid var(--border);
-      transition: background 0.3s, border-color 0.3s;
-    }
+  /* ─────────────────────────────────────────
+     PANELS
+  ───────────────────────────────────────── */
+  .container { max-width: 860px; margin: 0 auto; padding: 24px 20px 48px; }
 
-    .card-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--green);
-      margin-bottom: 18px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border-accent);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .card-title i { color: var(--orange); font-size: 17px; }
+  .panel { display: none; }
+  .panel.active {
+    display: block;
+    animation: panelIn 0.3s var(--ease) both;
+  }
+  @keyframes panelIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
-    /* ─── INFO NOTE ─── */
-    .info-note {
-      background: var(--card2);
-      border-right: 3px solid var(--green);
-      border-radius: var(--radius);
-      padding: 12px 16px;
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 18px;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-    }
-    .info-note i { color: var(--orange); font-size: 15px; margin-top: 1px; flex-shrink: 0; }
+  /* ─────────────────────────────────────────
+     CARDS
+  ───────────────────────────────────────── */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 24px 28px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    transition: border-color 0.25s var(--ease);
+  }
+  .card:hover { border-color: var(--border-gold); }
 
-    /* ─── FORM ─── */
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 22px; }
-    @media (max-width: 560px) { .form-grid { grid-template-columns: 1fr; } }
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+  }
+  .card-title i { color: var(--ember); font-size: 15px; }
 
-    .form-group { display: flex; flex-direction: column; gap: 5px; }
-    .form-group label {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .form-group label i { color: var(--green); font-size: 12px; }
+  /* ─────────────────────────────────────────
+     INFO NOTE
+  ───────────────────────────────────────── */
+  .info-note {
+    background: var(--info-bg);
+    border: 1px solid var(--info-border);
+    border-radius: var(--radius);
+    padding: 13px 16px;
+    font-size: 13px;
+    color: var(--text-2);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.7;
+  }
+  .info-note i { color: var(--gold); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
 
-    .form-group input,
-    .form-group select {
-      padding: 12px 14px;
-      border: 1px solid var(--input-border);
-      border-radius: var(--radius);
-      font-size: 15px;
-      font-family: inherit;
-      color: var(--text);
-      background: var(--input-bg);
-      text-align: right;
-      transition: var(--transition);
-      outline: none;
-    }
-    .form-group input:focus,
-    .form-group select:focus {
-      border-color: var(--green);
-      background: var(--card2);
-      box-shadow: 0 0 0 3px var(--green-glow);
-    }
-    .form-group input::placeholder { color: var(--text-dim); font-size: 13px; }
+  /* ─────────────────────────────────────────
+     FORM
+  ───────────────────────────────────────── */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+  @media (max-width: 560px) { .form-grid { grid-template-columns: 1fr; } }
 
-    /* ─── CALC BUTTON ─── */
-    .calc-btn {
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+  .form-group label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-3);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .form-group label i { color: var(--gold); font-size: 11px; }
+
+  .form-group input,
+  .form-group select {
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 15px;
+    font-weight: 500;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--input-bg);
+    text-align: right;
+    transition: all 0.2s var(--ease);
+    outline: none;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: var(--gold);
+    background: var(--input-focus);
+    box-shadow: 0 0 0 3px var(--gold-glow), inset 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .form-group input::placeholder { color: var(--text-3); font-size: 13px; }
+
+  /* ─────────────────────────────────────────
+     CALC BUTTON
+  ───────────────────────────────────────── */
+  .calc-btn {
+    width: 100%;
+    padding: 13px 20px;
+    background: var(--gold);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    margin-top: 18px;
+    font-family: inherit;
+    transition: all 0.25s var(--ease);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 12px var(--gold-glow);
+  }
+  .calc-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.12) 50%, transparent 60%);
+    transform: translateX(-100%);
+    transition: transform 0.45s var(--ease);
+  }
+  .calc-btn:hover::after { transform: translateX(100%); }
+  .calc-btn:hover {
+    background: var(--gold-bright);
+    box-shadow: 0 4px 20px var(--gold-glow);
+    transform: translateY(-1px);
+  }
+  .calc-btn:active { transform: translateY(0); box-shadow: 0 1px 6px var(--gold-glow); }
+  .calc-btn i { font-size: 15px; }
+
+  .calc-btn.secondary {
+    background: var(--surface2);
+    color: var(--text-2);
+    border: 1px solid var(--border-gold);
+    box-shadow: none;
+  }
+  .calc-btn.secondary:hover {
+    background: var(--gold);
+    color: #fff;
+    border-color: var(--gold);
+    box-shadow: 0 2px 12px var(--gold-glow);
+  }
+
+  /* ─────────────────────────────────────────
+     RESULTS
+  ───────────────────────────────────────── */
+  .results { display: none; }
+  .results.show { display: block; animation: panelIn 0.3s var(--ease) both; }
+
+  .result-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .rcard {
+    background: var(--rcard-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 12px;
+    text-align: center;
+    transition: all 0.2s var(--ease);
+    position: relative;
+  }
+  .rcard::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 16px; right: 16px;
+    height: 2px;
+    border-radius: 0 0 2px 2px;
+    background: linear-gradient(90deg, var(--gold), var(--ember));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .rcard:hover { border-color: var(--border-gold); transform: translateY(-2px); }
+  .rcard:hover::before { opacity: 1; }
+  .rcard .val { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; word-break: break-word; }
+  .rcard .lbl { font-size: 11px; color: var(--text-3); letter-spacing: 0.3px; text-transform: uppercase; }
+
+  .final-box {
+    background: var(--final-bg);
+    border-radius: var(--radius-lg);
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    border: 1px solid var(--border-gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .final-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      135deg,
+      transparent,
+      transparent 24px,
+      rgba(74,124,89,0.025) 24px,
+      rgba(74,124,89,0.025) 25px
+    );
+    pointer-events: none;
+  }
+  .final-box .lbl {
+    color: var(--text-2);
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+  }
+  .final-box .lbl i { color: var(--gold); }
+  .final-box .price {
+    color: var(--ember);
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    position: relative;
+  }
+
+  /* ─────────────────────────────────────────
+     CHART
+  ───────────────────────────────────────── */
+  .chart-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 20px 22px;
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .chart-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-3);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+  .chart-title i { color: var(--gold); }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin-bottom: 14px;
+    font-size: 12px;
+    color: var(--text-2);
+  }
+  .legend span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface2);
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+  .leg-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+  .chart-wrap { position: relative; height: 230px; }
+
+  /* ─────────────────────────────────────────
+     KARAT / COIN BUTTONS
+  ───────────────────────────────────────── */
+  .karat-group { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .karat-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 9px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    transition: all 0.18s var(--ease);
+    user-select: none;
+    min-width: 72px;
+    text-align: center;
+  }
+  .karat-btn input[type="radio"] { display: none; }
+  .karat-btn .coin-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .karat-btn .coin-sub { font-size: 10px; color: var(--text-3); margin-top: 2px; }
+  .karat-btn.active {
+    background: var(--gold);
+    border-color: var(--gold-bright);
+    box-shadow: 0 2px 10px var(--gold-glow);
+  }
+  .karat-btn.active .coin-name { color: #fff; }
+  .karat-btn.active .coin-sub { color: rgba(255,255,255,0.75); }
+  .karat-btn:hover:not(.active) { border-color: var(--border-gold); background: var(--surface3); }
+
+  .karat-info {
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: var(--text-2);
+    background: var(--info-bg);
+    border-radius: 10px;
+    padding: 9px 14px;
+    border-right: 3px solid var(--gold);
+  }
+  .karat-info b { color: var(--ember); }
+
+  /* ─────────────────────────────────────────
+     MULTI-KARAT TABLE (tab-mixed-new)
+  ───────────────────────────────────────── */
+  #nmix-table th {
+    padding: 9px 12px;
+    background: var(--gold);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  #nmix-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text);
+    background: var(--surface);
+  }
+  #nmix-table tr:hover td { background: var(--surface2); }
+  #nmix-table input[type="text"],
+  #nmix-table input[type="number"],
+  #nmix-table select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--input-bg);
+    color: var(--text);
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  #nmix-table input:focus,
+  #nmix-table select:focus { border-color: var(--gold); }
+  #nmix-table .del-btn {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    border: 1px solid rgba(232,89,12,0.3);
+    background: transparent;
+    color: var(--ember);
+    cursor: pointer;
+    font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    margin: auto;
+  }
+  #nmix-table .del-btn:hover { background: var(--ember); color: #fff; }
+
+  /* ─────────────────────────────────────────
+     RESPONSIVE — mobile: sidebar becomes bottom tab bar
+  ───────────────────────────────────────── */
+  @media (max-width: 700px) {
+    .top-bar { padding: 0 14px; }
+    .top-bar h1 { font-size: 14px; }
+    .container { padding: 14px 10px 80px; }
+    .card { padding: 18px 16px; }
+    .final-box { flex-direction: column; gap: 8px; text-align: center; }
+    .final-box .price { font-size: 22px; }
+    .result-cards { grid-template-columns: 1fr 1fr; }
+    .app-body { flex-direction: column-reverse; }
+    .sidebar {
       width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, var(--green-dark), var(--green));
-      color: #fff;
-      border: none;
-      border-radius: var(--radius);
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 20px;
-      font-family: inherit;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      box-shadow: 0 4px 14px var(--green-glow);
-      letter-spacing: 0.3px;
+      height: auto;
+      flex-direction: row;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 6px 8px;
+      border-left: none;
+      border-top: 1px solid var(--border-gold);
+      position: sticky;
+      bottom: 0;
+      top: auto;
+      gap: 4px;
+      background: var(--topbar-bg);
     }
-    .calc-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px var(--green-glow);
-      background: linear-gradient(135deg, var(--green), var(--orange));
-    }
-    .calc-btn:active { transform: translateY(0); }
-    .calc-btn i { font-size: 17px; }
-
-    .calc-btn.secondary {
-      background: var(--card2);
-      color: var(--text);
-      border: 1px solid var(--border-accent);
-      box-shadow: none;
-    }
-    .calc-btn.secondary:hover {
-      background: linear-gradient(135deg, var(--green-dark), var(--green));
-      color: #fff;
-      box-shadow: 0 4px 14px var(--green-glow);
-    }
-
-    /* ─── RESULTS ─── */
-    .results { display: none; animation: fadeUp 0.3s ease forwards; }
-    .results.show { display: block; }
-
-    .result-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-    .rcard {
-      background: var(--rcard-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px 12px;
-      text-align: center;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-    }
-    .rcard::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--green), var(--orange));
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-    .rcard:hover { border-color: var(--border-accent); transform: translateY(-2px); }
-    .rcard:hover::before { opacity: 1; }
-    .rcard .val { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; word-break: break-word; }
-    .rcard .lbl { font-size: 12px; color: var(--text-muted); }
-
-    .final-box {
-      background: var(--result-bg);
-      border-radius: var(--radius-lg);
-      padding: 18px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      border: 1px solid var(--border-accent);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
-    }
-    .final-box .lbl {
-      color: var(--text-muted);
-      font-size: 14px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .final-box .lbl i { color: var(--green); }
-    .final-box .price {
-      color: var(--orange);
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-
-    /* ─── CHART SECTION ─── */
-    .chart-section {
-      background: var(--card);
-      border-radius: var(--radius-lg);
-      padding: 20px 22px;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border);
-      transition: background 0.3s;
-    }
-    .chart-title {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 14px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      letter-spacing: 0.3px;
-      text-transform: uppercase;
-    }
-    .chart-title i { color: var(--green); }
-
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px 16px;
-      margin-bottom: 14px;
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-    .legend span {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .leg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
-    .chart-wrap { position: relative; height: 240px; }
-
-    /* ─── KARAT BUTTONS ─── */
-    .karat-label { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-
-    .karat-group { display: flex; flex-wrap: wrap; gap: 8px; }
-    .karat-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 9px 14px;
-      border-radius: var(--radius);
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 600;
-      border: 1px solid var(--border);
-      background: var(--input-bg);
-      color: var(--text-muted);
-      transition: var(--transition);
-      user-select: none;
-      min-width: 72px;
-    }
-    .karat-btn input[type="radio"] { display: none; }
-    .karat-btn .coin-name { font-size: 13px; font-weight: 700; color: var(--text); }
-    .karat-btn .coin-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-    .karat-btn.active {
-      background: linear-gradient(135deg, var(--green-dark), var(--green));
-      color: #fff;
-      border-color: var(--green);
-      box-shadow: 0 2px 10px var(--green-glow);
-    }
-    .karat-btn.active .coin-name,
-    .karat-btn.active .coin-sub { color: rgba(255,255,255,0.9); }
-    .karat-btn:hover:not(.active) { border-color: var(--green); color: var(--text); }
-
-    .karat-info {
-      margin-top: 10px;
-      font-size: 12px;
-      color: var(--text-muted);
-      background: var(--card2);
-      border-radius: var(--radius);
-      padding: 9px 14px;
-      border-right: 2px solid var(--green);
-    }
-    .karat-info b { color: var(--orange); }
-
-    /* ─── DIVIDER ─── */
-    .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
-
-    /* ─── FORMULA BADGE ─── */
-    .formula-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--card2);
-      border: 1px solid var(--border-accent);
-      border-radius: 6px;
-      padding: 6px 12px;
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 18px;
-      font-weight: 500;
-    }
-    .formula-badge i { color: var(--orange); }
-    .formula-badge b { color: var(--green); }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 700px) {
-      .top-bar { padding: 0 14px; }
-      .top-bar-title h1 { font-size: 15px; }
-      .container { padding: 14px 10px; }
-      .card { padding: 18px 16px; }
-      .final-box { flex-direction: column; gap: 8px; text-align: center; }
-      .final-box .price { font-size: 22px; }
-      .result-cards { grid-template-columns: 1fr 1fr; }
-      .tab-btn .tab-label { display: none; }
-      .tab-btn { min-width: 44px; padding: 10px 6px; }
-      .tab-btn .tab-icon { font-size: 17px; }
-    }
-    @media (max-width: 460px) {
-      .result-cards { grid-template-columns: 1fr; }
-      .final-box .price { font-size: 18px; }
-      .chart-wrap { height: 200px; }
-    }
-  </style>
+    .sidebar-title { display: none; }
+    .sidebar .tab-btn { flex: 1; min-width: 60px; padding: 7px 4px; }
+    .sidebar .tab-btn .tab-icon { font-size: 17px; }
+    .sidebar .tab-btn .tab-label { font-size: 9px; }
+  }
+  @media (max-width: 460px) {
+    .result-cards { grid-template-columns: 1fr; }
+    .final-box .price { font-size: 18px; }
+    .chart-wrap { height: 200px; }
+  }
+</style>
 </head>
-<body>
+<body data-theme="dark">
 
   <div class="top-bar">
-    <div class="top-bar-title">
-      <h1>محاسبه‌گر طلا و سکه داور</h1>
+    <div>
+      <h1>محاسبه گر طلا و سکه داور</h1>
       <p>قیمت‌گذاری حرفه‌ای برای طلافروشی</p>
     </div>
-    <div class="theme-toggle" onclick="toggleTheme()" title="تغییر حالت نمایش">
-      <div class="toggle-track">
-        <div class="toggle-thumb">
-          <i class="fas fa-sun" id="themeIcon" style="color:#aaa"></i>
-        </div>
-      </div>
-      <span id="themeLabel">حالت تاریک</span>
-    </div>
+    <div class="top-bar-spacer"></div>
+    <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="تغییر حالت روشن/تاریک">
+      <i class="fas fa-moon" id="themeIcon"></i>
+    </button>
   </div>
 
-  <div class="container">
-    <div class="tabs">
+  <div class="app-body">
+    <!-- سایدبار راست -->
+    <nav class="sidebar" id="mainSidebar">
+      <div class="sidebar-title">منو</div>
       <button class="tab-btn active" onclick="switchTab('new',this)">
-        <span class="tab-icon">✨</span><span class="tab-label">طلای نو</span>
+        <span class="tab-icon">✨</span>
+        <span class="tab-label">طلای نو</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('mixed-new',this)">
+        <span class="tab-icon">🔢</span>
+        <span class="tab-label">چند عیار نو</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('g2g',this)">
+        <span class="tab-icon">🔁</span>
+        <span class="tab-label">طلا به طلا</span>
       </button>
       <button class="tab-btn" onclick="switchTab('used',this)">
-        <span class="tab-icon">🔄</span><span class="tab-label">دست دوم</span>
+        <span class="tab-icon">🔄</span>
+        <span class="tab-label">دست دوم</span>
       </button>
       <button class="tab-btn" onclick="switchTab('melted',this)">
-        <span class="tab-icon">💧</span><span class="tab-label">آبشده</span>
+        <span class="tab-icon">💧</span>
+        <span class="tab-label">آبشده</span>
       </button>
       <button class="tab-btn" onclick="switchTab('coin',this)">
-        <span class="tab-icon">🪙</span><span class="tab-label">سکه بهار</span>
+        <span class="tab-icon">🪙</span>
+        <span class="tab-label">سکه بهار</span>
       </button>
       <button class="tab-btn" onclick="switchTab('parsian',this)">
-        <span class="tab-icon">🏅</span><span class="tab-label">پارسیان</span>
+        <span class="tab-icon">🏅</span>
+        <span class="tab-label">پارسیان</span>
       </button>
+    </nav>
+
+    <!-- محتوای اصلی -->
+    <div class="main-content">
+  <div class="container">
+    <div class="tabs">
     </div>
 
-    <!-- ─── TAB: طلای نو ─── -->
+    <!-- TAB: طلای نو -->
     <div id="tab-new" class="panel active">
       <div class="card">
         <div class="card-title"><i class="fas fa-gem"></i> محاسبه طلای نو</div>
         <div class="info-note">
           <i class="fas fa-info-circle"></i>
-          <span>محاسبه گام‌به‌گام: <b>قیمت پایه × سود سازنده = قیمت مرحله اول</b> — سپس <b>قیمت مرحله اول × سود فروشنده = قیمت مرحله دوم</b> — مالیات ۱۰٪ روی جمع هر دو سود</span>
-        </div>
-        <div class="formula-badge">
-          <i class="fas fa-function"></i>
-          <span>فرمول: <b>(قیمت_پایه × (۱ + اجرت٪)) × (۱ + سود٪)</b> + مالیات ۱۰٪ سودها</span>
+          <span>فرمول گام‌به‌گام: <b>قیمت_پایه × (۱ + اجرت٪) = مرحله اول</b> — سپس <b>مرحله اول × (۱ + سود٪) = مرحله دوم</b> — مالیات ۱۰٪ روی جمع هر دو سود</span>
         </div>
         <div class="form-grid">
           <div class="form-group">
-            <label><i class="fas fa-tag"></i> قیمت هر گرم طلا (تومان)</label>
-            <input type="text" id="n-gprice" data-type="int" value="4,500,000" placeholder="مثال: 4,500,000" class="num-input">
+            <label><i class="fas fa-user"></i> نام مشتری</label>
+            <input type="text" id="n-customer" placeholder="مثال: آقای محمدی">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-box"></i> نام / مشخصات طلا</label>
+            <input type="text" id="n-itemname" placeholder="مثال: گردنبند طرح برگ">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-tag"></i> قیمت هر گرم طلا (ریال)</label>
+            <input type="text" id="n-gprice" data-type="int" value="" placeholder="قیمت هر گرم طلای ۱۸ عیار (ریال)" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-weight-scale"></i> وزن (گرم)</label>
             <input type="text" id="n-weight" data-type="float" value="5.2" placeholder="مثال: 5.2" class="num-input">
           </div>
           <div class="form-group">
-            <label><i class="fas fa-percent"></i> درصد اجرت / سود سازنده (%)</label>
-            <input type="text" id="n-making" data-type="float" value="7" placeholder="مثال: 7" class="num-input">
+            <label><i class="fas fa-percent"></i> درصد سود سازنده / اجرت (%)</label>
+            <input type="text" id="n-making" data-type="float" value="10" placeholder="مثال: 7" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-percent"></i> درصد سود فروشنده (%)</label>
-            <input type="text" id="n-profit" data-type="float" value="3" placeholder="مثال: 3" class="num-input">
+            <input type="text" id="n-profit" data-type="float" value="7" placeholder="مثال: 3" class="num-input">
           </div>
         </div>
-        <button class="calc-btn" onclick="calcNew()"><i class="fas fa-calculator"></i> محاسبه قیمت نهایی</button>
+        <div style="display:flex;gap:10px;">
+        <button class="calc-btn" onclick="calcNew()" style="flex:1;"><i class="fas fa-calculator"></i> محاسبه قیمت نهایی</button>
+        <button class="calc-btn secondary" onclick="resetNew()" style="flex:0 0 auto;padding:10px 14px;font-size:14px;min-width:auto;width:auto;" title="ریست فرم"><i class="fas fa-rotate-left"></i></button>
+        </div>
       </div>
 
       <div id="res-new" class="results">
         <div class="card">
           <div class="result-cards">
             <div class="rcard"><div class="val" id="n-raw">—</div><div class="lbl">قیمت پایه هر گرم</div></div>
-            <div class="rcard"><div class="val" id="n-mc">—</div><div class="lbl">اجرت سازنده</div></div>
-            <div class="rcard"><div class="val" id="n-sp">—</div><div class="lbl">سود فروشنده</div></div>
+            <div class="rcard"><div class="val" id="n-mc">—</div><div class="lbl">سود سازنده (هر گرم)</div></div>
+            <div class="rcard"><div class="val" id="n-sp">—</div><div class="lbl">سود فروشنده (هر گرم)</div></div>
             <div class="rcard"><div class="val" id="n-tx">—</div><div class="lbl">مالیات ۱۰٪</div></div>
             <div class="rcard"><div class="val" id="n-pgram">—</div><div class="lbl">قیمت هر گرم نهایی</div></div>
           </div>
@@ -588,42 +741,178 @@
         <div class="chart-section">
           <div class="chart-title"><i class="fas fa-chart-pie"></i> ترکیب قیمت نهایی</div>
           <div class="legend" id="n-legend"></div>
-          <div class="chart-wrap"><canvas id="chartNew"></canvas></div>
+          <div class="chart-wrap"><canvas id="chartNew" role="img" aria-label="نمودار ترکیب قیمت طلای نو"></canvas></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB: طلا به طلا -->
+    <div id="tab-g2g" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fas fa-arrows-rotate"></i> حساب طلا به طلا</div>
+        <div class="info-note">
+          <i class="fas fa-info-circle"></i>
+          <span>محاسبات دقیقاً مانند بخش «طلای نو» است، با این تفاوت که به‌جای مبلغ (ریال)، بر مبنای <b>وزن طلا</b> انجام می‌شود. فرمول: <b>وزن پایه × (۱ + اجرت٪) = مرحله اول</b> — سپس <b>مرحله اول × (۱ + سود٪) = مرحله دوم</b> — مالیات (اختیاری) ۱۰٪ روی جمع هر دو سود</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label><i class="fas fa-user"></i> نام مشتری</label>
+            <input type="text" id="g2g-customer" placeholder="مثال: آقای محمدی">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-box"></i> نام / مشخصات طلا</label>
+            <input type="text" id="g2g-itemname" placeholder="مثال: گردنبند طرح برگ">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-weight-scale"></i> وزن پایه طلا (گرم)</label>
+            <input type="text" id="g2g-weight" data-type="float" value="" placeholder="مثال: 5.2" class="num-input">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-percent"></i> درصد سود سازنده / اجرت (%)</label>
+            <input type="text" id="g2g-making" data-type="float" value="10" placeholder="مثال: 10" class="num-input">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-percent"></i> درصد سود فروشنده (%)</label>
+            <input type="text" id="g2g-profit" data-type="float" value="7" placeholder="مثال: 7" class="num-input">
+          </div>
+        </div>
+
+        <div style="margin:6px 0 16px;">
+          <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 14px;width:fit-content;">
+            <input type="checkbox" id="cb-g2g-tax" style="accent-color:var(--gold);width:16px;height:16px;">
+            <i class="fas fa-percent" style="color:var(--gold);"></i> احتساب مالیات ۱۰٪ در محاسبه
+          </label>
+        </div>
+
+        <div style="display:flex;gap:10px;">
+        <button class="calc-btn" onclick="calcG2G()" style="flex:1;"><i class="fas fa-calculator"></i> محاسبه وزن نهایی</button>
+        <button class="calc-btn secondary" onclick="resetG2G()" style="flex:0 0 auto;padding:10px 14px;font-size:14px;min-width:auto;width:auto;" title="ریست فرم"><i class="fas fa-rotate-left"></i></button>
+        </div>
+      </div>
+
+      <div id="res-g2g" class="results">
+        <div class="card">
+          <div class="result-cards">
+            <div class="rcard"><div class="val" id="g2g-raw">—</div><div class="lbl">وزن پایه</div></div>
+            <div class="rcard"><div class="val" id="g2g-mc">—</div><div class="lbl">اجرت سازنده (وزن)</div></div>
+            <div class="rcard"><div class="val" id="g2g-sp">—</div><div class="lbl">سود فروشنده (وزن)</div></div>
+            <div class="rcard"><div class="val" id="g2g-tx">—</div><div class="lbl">مالیات (وزن)</div></div>
+            <div class="rcard"><div class="val" id="g2g-pgram">—</div><div class="lbl">وزن نهایی طلا</div></div>
+          </div>
+          <div class="final-box">
+            <span class="lbl"><i class="fas fa-weight-scale"></i> وزن نهایی طلای موردنیاز</span>
+            <span class="price" id="g2g-final">—</span>
+          </div>
+        </div>
+        <div class="chart-section">
+          <div class="chart-title"><i class="fas fa-chart-pie"></i> ترکیب وزن نهایی</div>
+          <div class="legend" id="g2g-legend"></div>
+          <div class="chart-wrap"><canvas id="chartG2G" role="img" aria-label="نمودار ترکیب وزن طلا به طلا"></canvas></div>
         </div>
       </div>
     </div>
 
-    <!-- ─── TAB: دست دوم ─── -->
+    <!-- TAB: چند قطعه طلای نو با عیار متفاوت (مستقل) -->
+    <div id="tab-mixed-new" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fas fa-layer-group"></i> محاسبه چند قطعه طلای نو با عیار متفاوت</div>
+        <div class="info-note">
+          <i class="fas fa-info-circle"></i>
+          اگر چند قطعه طلا با عیار یا مشخصات متفاوت می‌فروشید، هر قطعه را جداگانه وارد کنید — قیمت نهایی هر قطعه شامل اجرت، سود و مالیات است.
+        </div>
+
+        <div class="form-grid" style="margin-bottom:16px;">
+          <div class="form-group">
+            <label><i class="fas fa-tag"></i> قیمت مبنا (هر گرم طلای ۱۸ عیار — ریال)</label>
+            <input type="text" id="nmix-gprice" data-type="int" value="" placeholder="قیمت هر گرم طلای ۱۸ عیار (ریال)" class="num-input">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-percent"></i> اجرت سازنده (%)</label>
+            <input type="text" id="nmix-making" data-type="float" value="10" placeholder="مثال: 7" class="num-input" oninput="syncNmixCalc()">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-percent"></i> سود فروشنده (%)</label>
+            <input type="text" id="nmix-profit" data-type="float" value="7" placeholder="مثال: 3" class="num-input" oninput="syncNmixCalc()">
+          </div>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;margin-bottom:14px;" id="nmix-table">
+            <thead>
+              <tr style="background:var(--gold);color:#fff;">
+                <th style="padding:10px 12px;text-align:right;border-radius:6px 0 0 0;font-size:14px;">شرح / نام قطعه</th>
+                <th style="padding:10px 12px;text-align:right;font-size:14px;">عیار</th>
+                <th style="padding:10px 12px;text-align:right;font-size:14px;">وزن (گرم)</th>
+                <th style="padding:10px 12px;text-align:right;font-size:14px;">قیمت نهایی (ریال)</th>
+                <th style="padding:10px 12px;text-align:center;border-radius:0 6px 0 0;font-size:14px;">حذف</th>
+              </tr>
+            </thead>
+            <tbody id="nmix-rows"></tbody>
+          </table>
+        </div>
+
+        <button class="calc-btn secondary" onclick="addNmixRow()" style="margin-top:0;margin-bottom:14px;">
+          <i class="fas fa-plus"></i> افزودن قطعه جدید
+        </button>
+        <button class="calc-btn" onclick="calcNmixed()">
+          <i class="fas fa-calculator"></i> محاسبه جمع کل
+        </button>
+      </div>
+
+      <div id="res-nmixed" class="results">
+        <div class="card">
+          <div style="margin-bottom:14px;">
+            <div style="font-size:15px;color:var(--text-muted);margin-bottom:10px;font-weight:600;">جزئیات هر قطعه:</div>
+            <div id="nmix-detail-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+          <div class="final-box">
+            <span class="lbl"><i class="fas fa-coins"></i> جمع کل قابل دریافت از مشتری</span>
+            <span class="price" id="nmix-final">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: دست دوم -->
     <div id="tab-used" class="panel">
       <div class="card">
         <div class="card-title"><i class="fas fa-exchange-alt"></i> خرید طلای دست دوم از مشتری</div>
         <div class="info-note">
           <i class="fas fa-info-circle"></i>
-          قیمت پرداختی به مشتری بر اساس عیار تعدیل می‌شود.
+          این بخش برای <b>خرید طلا از مشتری</b> است — قیمت پرداختی به مشتری بر اساس عیار محاسبه می‌شود.
         </div>
-        <div class="section-label" style="margin-bottom:8px;"><i class="fas fa-stamp"></i> عیار طلای خریداری‌شده</div>
-        <div class="karat-group">
-          <label class="karat-btn active"><input type="radio" name="u-karat" value="750" checked> عیار ۱۸ (۷۵۰)</label>
-          <label class="karat-btn"><input type="radio" name="u-karat" value="740"> عیار ۷۴۰</label>
-          <label class="karat-btn"><input type="radio" name="u-karat" value="735"> عیار ۷۳۵</label>
-          <label class="karat-btn"><input type="radio" name="u-karat" value="730"> عیار ۷۳۰</label>
-          <label class="karat-btn"><input type="radio" name="u-karat" value="708"> عیار ۱۷ (۷۰۸)</label>
+
+        <div style="margin-bottom:16px;">
+          <div style="font-size:15px;color:var(--text-muted);margin-bottom:10px;">عیار طلای خریداری‌شده:</div>
+          <div class="karat-group">
+            <label class="karat-btn active"><input type="radio" name="u-karat" value="750" checked> عیار ۱۸ (۷۵۰)</label>
+            <label class="karat-btn"><input type="radio" name="u-karat" value="740"> عیار ۷۴۰</label>
+            <label class="karat-btn"><input type="radio" name="u-karat" value="735"> عیار ۷۳۵</label>
+            <label class="karat-btn"><input type="radio" name="u-karat" value="730"> عیار ۷۳۰</label>
+            <label class="karat-btn"><input type="radio" name="u-karat" value="708"> عیار ۱۷ (۷۰۸)</label>
+          </div>
+          <div id="u-karat-info" class="karat-info">
+            ضریب تبدیل: <b id="u-ratio-txt">۱.۰۰۰۰</b> — قیمت هر گرم به عیار انتخابی تعدیل می‌شود
+          </div>
         </div>
-        <div id="u-karat-info" class="karat-info" style="margin-top:10px;">
-          ضریب تبدیل: <b id="u-ratio-txt">۱.۰۰۰۰</b>
-        </div>
-        <div class="form-grid" style="margin-top:18px;">
+
+        <div class="form-grid">
           <div class="form-group">
-            <label><i class="fas fa-tag"></i> قیمت هر گرم طلای ۱۸ عیار (تومان)</label>
-            <input type="text" id="u-gprice" data-type="int" value="4,500,000" class="num-input">
+            <label><i class="fas fa-tag"></i> قیمت هر گرم طلای ۱۸ عیار (ریال)</label>
+            <input type="text" id="u-gprice" data-type="int" value="" placeholder="مثال: 450,000,000,000" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-weight-scale"></i> وزن (گرم)</label>
-            <input type="text" id="u-weight" data-type="float" value="3.8" class="num-input">
+            <input type="text" id="u-weight" data-type="float" value="3.8" placeholder="مثال: 3.8" class="num-input">
           </div>
         </div>
-        <button class="calc-btn" onclick="calcUsed()"><i class="fas fa-hand-holding-usd"></i> محاسبه مبلغ پرداختی</button>
+        <div style="display:flex;gap:10px;">
+        <button class="calc-btn" onclick="calcUsed()" style="flex:1;"><i class="fas fa-hand-holding-usd"></i> محاسبه مبلغ پرداختی به مشتری</button>
+        <button class="calc-btn secondary" onclick="resetUsed()" style="flex:0 0 auto;padding:10px 14px;font-size:14px;min-width:auto;width:auto;" title="ریست فرم"><i class="fas fa-rotate-left"></i></button>
+        </div>
       </div>
+
       <div id="res-used" class="results">
         <div class="card">
           <div class="result-cards">
@@ -636,29 +925,88 @@
           </div>
         </div>
       </div>
+
+      <!-- بخش محاسبه چند قطعه با عیار متفاوت -->
+      <div class="card" style="margin-top:0;">
+        <div class="card-title"><i class="fas fa-layer-group"></i> محاسبه چند قطعه با عیار متفاوت</div>
+        <div class="info-note">
+          <i class="fas fa-info-circle"></i>
+          اگر طلاهایی با عیارهای مختلف خریداری می‌کنید، هر قطعه را جداگانه وارد کنید — مبالغ به هم جمع می‌شوند.
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <div style="font-size:15px;color:var(--text-muted);margin-bottom:10px;">قیمت مبنا (هر گرم طلای ۱۸ عیار — ریال):</div>
+          <div class="form-group" style="max-width:340px;">
+            <input type="text" id="mix-gprice" data-type="int" value="" placeholder="قیمت هر گرم طلای ۱۸ عیار (ریال)" class="num-input">
+          </div>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;margin-bottom:14px;" id="mix-table">
+            <thead>
+              <tr style="background:var(--gold);color:#fff;">
+                <th style="padding:10px 12px;text-align:right;border-radius:6px 0 0 0;font-size:14px;">شرح / نام قطعه</th>
+                <th style="padding:10px 12px;text-align:right;font-size:14px;">عیار</th>
+                <th style="padding:10px 12px;text-align:right;font-size:14px;">وزن (گرم)</th>
+                <th style="padding:10px 12px;text-align:right;font-size:14px;">مبلغ (ریال)</th>
+                <th style="padding:10px 12px;text-align:center;border-radius:0 6px 0 0;font-size:14px;">حذف</th>
+              </tr>
+            </thead>
+            <tbody id="mix-rows"></tbody>
+          </table>
+        </div>
+
+        <button class="calc-btn secondary" onclick="addMixRow()" style="margin-top:0;margin-bottom:14px;">
+          <i class="fas fa-plus"></i> افزودن قطعه جدید
+        </button>
+
+        <button class="calc-btn" onclick="calcMixed()">
+          <i class="fas fa-calculator"></i> محاسبه جمع کل
+        </button>
+      </div>
+
+      <div id="res-mixed" class="results">
+        <div class="card">
+          <div style="margin-bottom:14px;">
+            <div style="font-size:15px;color:var(--text-muted);margin-bottom:10px;font-weight:600;">جزئیات هر قطعه:</div>
+            <div id="mix-detail-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+          <div class="final-box">
+            <span class="lbl"><i class="fas fa-hand-holding-usd"></i> جمع کل پرداخت به مشتری</span>
+            <span class="price" id="mix-final">—</span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- ─── TAB: آبشده ─── -->
+    <!-- TAB: آبشده -->
     <div id="tab-melted" class="panel">
       <div class="card">
         <div class="card-title"><i class="fas fa-water"></i> محاسبه طلای آبشده</div>
-        <div class="info-note"><i class="fas fa-info-circle"></i> طلای آبشده بر اساس وزن خالص و قیمت روز + کارمزد.</div>
+        <div class="info-note">
+          <i class="fas fa-info-circle"></i>
+          طلای آبشده بر اساس وزن خالص و قیمت روز محاسبه می‌شود.
+        </div>
         <div class="form-grid">
           <div class="form-group">
-            <label><i class="fas fa-tag"></i> قیمت هر گرم طلا (تومان)</label>
-            <input type="text" id="m-gprice" data-type="int" value="4,500,000" class="num-input">
+            <label><i class="fas fa-tag"></i> قیمت هر گرم طلا (ریال)</label>
+            <input type="text" id="m-gprice" data-type="int" value="" placeholder="مثال: 450,000,000,000" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-weight-scale"></i> وزن (گرم)</label>
-            <input type="text" id="m-weight" data-type="float" value="10" class="num-input">
+            <input type="text" id="m-weight" data-type="float" value="10" placeholder="مثال: 10" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-percent"></i> کارمزد (%)</label>
-            <input type="text" id="m-comm" data-type="float" value="1" class="num-input">
+            <input type="text" id="m-comm" data-type="float" value="1" placeholder="مثال: 1" class="num-input">
           </div>
         </div>
-        <button class="calc-btn" onclick="calcMelted()"><i class="fas fa-calculator"></i> محاسبه قیمت نهایی</button>
+        <div style="display:flex;gap:10px;">
+        <button class="calc-btn" onclick="calcMelted()" style="flex:1;"><i class="fas fa-calculator"></i> محاسبه قیمت نهایی</button>
+        <button class="calc-btn secondary" onclick="resetMelted()" style="flex:0 0 auto;padding:10px 14px;font-size:14px;min-width:auto;width:auto;" title="ریست فرم"><i class="fas fa-rotate-left"></i></button>
+        </div>
       </div>
+
       <div id="res-melted" class="results">
         <div class="card">
           <div class="result-cards">
@@ -673,53 +1021,64 @@
       </div>
     </div>
 
-    <!-- ─── TAB: سکه بهار ─── -->
+    <!-- TAB: سکه بهار -->
     <div id="tab-coin" class="panel">
       <div class="card">
         <div class="card-title"><i class="fas fa-coins"></i> سکه بهار آزادی</div>
-        <div class="info-note"><i class="fas fa-info-circle"></i> عیار ۲۲ (۹۰۰) — ضرب بانک مرکزی</div>
-        <div class="section-label"><i class="fas fa-circle-dot"></i> نوع سکه</div>
-        <div class="karat-group">
-          <label class="karat-btn active">
-            <input type="radio" name="coin-type" value="8.133" checked>
-            <span class="coin-name">تمام سکه</span>
-            <span class="coin-sub">۸.۱۳۳ گرم</span>
-          </label>
-          <label class="karat-btn">
-            <input type="radio" name="coin-type" value="4.066">
-            <span class="coin-name">نیم سکه</span>
-            <span class="coin-sub">۴.۰۶۶ گرم</span>
-          </label>
-          <label class="karat-btn">
-            <input type="radio" name="coin-type" value="2.033">
-            <span class="coin-name">ربع سکه</span>
-            <span class="coin-sub">۲.۰۳۳ گرم</span>
-          </label>
-          <label class="karat-btn">
-            <input type="radio" name="coin-type" value="1.01">
-            <span class="coin-name">سکه گرمی</span>
-            <span class="coin-sub">۱.۰۱۰ گرم</span>
-          </label>
+        <div class="info-note">
+          <i class="fas fa-info-circle"></i>
+          عیار ۲۲ (۹۰۰) — ضرب بانک مرکزی — قیمت بر اساس بازار روز
         </div>
-        <div id="c-coin-info" class="karat-info" style="margin-top:10px;">
-          نوع انتخابی: <b id="c-coin-txt">تمام سکه — ۸.۱۳۳ گرم</b>
+
+        <div style="margin-bottom:16px;">
+          <div style="font-size:15px;color:var(--text-muted);margin-bottom:10px;">نوع سکه:</div>
+          <div class="karat-group">
+            <label class="karat-btn active">
+              <input type="radio" name="coin-type" value="8.133" checked>
+              <span class="coin-name">تمام سکه</span>
+              <span class="coin-sub">۸.۱۳۳ گرم</span>
+            </label>
+            <label class="karat-btn">
+              <input type="radio" name="coin-type" value="4.066">
+              <span class="coin-name">نیم سکه</span>
+              <span class="coin-sub">۴.۰۶۶ گرم</span>
+            </label>
+            <label class="karat-btn">
+              <input type="radio" name="coin-type" value="2.033">
+              <span class="coin-name">ربع سکه</span>
+              <span class="coin-sub">۲.۰۳۳ گرم</span>
+            </label>
+            <label class="karat-btn">
+              <input type="radio" name="coin-type" value="1.01">
+              <span class="coin-name">سکه گرمی</span>
+              <span class="coin-sub">۱.۰۱۰ گرم</span>
+            </label>
+          </div>
+          <div id="c-coin-info" class="karat-info">
+            نوع انتخابی: <b id="c-coin-txt">تمام سکه — ۸.۱۳۳ گرم — عیار ۹۰۰</b>
+          </div>
         </div>
-        <div class="form-grid" style="margin-top:18px;">
+
+        <div class="form-grid">
           <div class="form-group">
-            <label><i class="fas fa-tag"></i> قیمت بازار هر سکه (تومان)</label>
-            <input type="text" id="c-price" data-type="int" value="85,000,000" class="num-input">
+            <label><i class="fas fa-tag"></i> قیمت بازار هر سکه (ریال)</label>
+            <input type="text" id="c-price" data-type="int" value="8,500,000,000,000" placeholder="مثال: 8,500,000,000,000" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-hashtag"></i> تعداد</label>
-            <input type="text" id="c-count" data-type="int" value="3" class="num-input">
+            <input type="text" id="c-count" data-type="int" value="3" placeholder="مثال: 3" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-percent"></i> کارمزد (%)</label>
-            <input type="text" id="c-comm" data-type="float" value="0.5" class="num-input">
+            <input type="text" id="c-comm" data-type="float" value="0.5" placeholder="مثال: 0.5" class="num-input">
           </div>
         </div>
-        <button class="calc-btn" onclick="calcCoin()"><i class="fas fa-calculator"></i> محاسبه قیمت کل</button>
+        <div style="display:flex;gap:10px;">
+        <button class="calc-btn" onclick="calcCoin()" style="flex:1;"><i class="fas fa-calculator"></i> محاسبه قیمت کل</button>
+        <button class="calc-btn secondary" onclick="resetCoin()" style="flex:0 0 auto;padding:10px 14px;font-size:14px;min-width:auto;width:auto;" title="ریست فرم"><i class="fas fa-rotate-left"></i></button>
+        </div>
       </div>
+
       <div id="res-coin" class="results">
         <div class="card">
           <div class="result-cards">
@@ -736,53 +1095,64 @@
       </div>
     </div>
 
-    <!-- ─── TAB: سکه پارسیان ─── -->
+    <!-- TAB: سکه پارسیان -->
     <div id="tab-parsian" class="panel">
       <div class="card">
         <div class="card-title"><i class="fas fa-medal"></i> سکه پارسیان</div>
-        <div class="info-note"><i class="fas fa-info-circle"></i> عیار ۱۸ (۷۵۰) — هر سوت = ۰.۰۰۱ گرم</div>
-        <div class="section-label"><i class="fas fa-circle-dot"></i> وزن سکه پارسیان</div>
-        <div class="karat-group" style="gap:6px;">
-          <label class="karat-btn active"><input type="radio" name="par-wt" value="0.05" checked><span class="coin-name">۵۰ سوت</span><span class="coin-sub">۰.۰۵۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.10"><span class="coin-name">۱۰۰ سوت</span><span class="coin-sub">۰.۱۰۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.15"><span class="coin-name">۱۵۰ سوت</span><span class="coin-sub">۰.۱۵۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.20"><span class="coin-name">۲۰۰ سوت</span><span class="coin-sub">۰.۲۰۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.25"><span class="coin-name">۲۵۰ سوت</span><span class="coin-sub">۰.۲۵۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.30"><span class="coin-name">۳۰۰ سوت</span><span class="coin-sub">۰.۳۰۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.35"><span class="coin-name">۳۵۰ سوت</span><span class="coin-sub">۰.۳۵۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.40"><span class="coin-name">۴۰۰ سوت</span><span class="coin-sub">۰.۴۰۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.45"><span class="coin-name">۴۵۰ سوت</span><span class="coin-sub">۰.۴۵۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.50"><span class="coin-name">۵۰۰ سوت</span><span class="coin-sub">۰.۵۰۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.55"><span class="coin-name">۵۵۰ سوت</span><span class="coin-sub">۰.۵۵۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.60"><span class="coin-name">۶۰۰ سوت</span><span class="coin-sub">۰.۶۰۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.65"><span class="coin-name">۶۵۰ سوت</span><span class="coin-sub">۰.۶۵۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.70"><span class="coin-name">۷۰۰ سوت</span><span class="coin-sub">۰.۷۰۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.75"><span class="coin-name">۷۵۰ سوت</span><span class="coin-sub">۰.۷۵۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.80"><span class="coin-name">۸۰۰ سوت</span><span class="coin-sub">۰.۸۰۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.85"><span class="coin-name">۸۵۰ سوت</span><span class="coin-sub">۰.۸۵۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.90"><span class="coin-name">۹۰۰ سوت</span><span class="coin-sub">۰.۹۰۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="0.95"><span class="coin-name">۹۵۰ سوت</span><span class="coin-sub">۰.۹۵۰ گ</span></label>
-          <label class="karat-btn"><input type="radio" name="par-wt" value="1.00"><span class="coin-name">۱۰۰۰ سوت</span><span class="coin-sub">۱.۰۰۰ گ</span></label>
+        <div class="info-note">
+          <i class="fas fa-info-circle"></i>
+          عیار ۱۸ (۷۵۰) — هر سوت = ۰.۰۰۱ گرم — از ۵۰ سوت تا ۱ گرم
         </div>
-        <div id="par-wt-info" class="karat-info" style="margin-top:10px;">
-          سکه: <b id="par-wt-txt">۵۰ سوت — ۰.۰۵۰ گرم</b>
+
+        <div style="margin-bottom:16px;">
+          <div style="font-size:15px;color:var(--text-muted);margin-bottom:10px;">وزن سکه پارسیان:</div>
+          <div class="karat-group" style="gap:6px;">
+            <label class="karat-btn active"><input type="radio" name="par-wt" value="0.05" checked><span class="coin-name">۵۰ سوت</span><span class="coin-sub">۰.۰۵۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.10"><span class="coin-name">۱۰۰ سوت</span><span class="coin-sub">۰.۱۰۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.15"><span class="coin-name">۱۵۰ سوت</span><span class="coin-sub">۰.۱۵۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.20"><span class="coin-name">۲۰۰ سوت</span><span class="coin-sub">۰.۲۰۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.25"><span class="coin-name">۲۵۰ سوت</span><span class="coin-sub">۰.۲۵۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.30"><span class="coin-name">۳۰۰ سوت</span><span class="coin-sub">۰.۳۰۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.35"><span class="coin-name">۳۵۰ سوت</span><span class="coin-sub">۰.۳۵۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.40"><span class="coin-name">۴۰۰ سوت</span><span class="coin-sub">۰.۴۰۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.45"><span class="coin-name">۴۵۰ سوت</span><span class="coin-sub">۰.۴۵۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.50"><span class="coin-name">۵۰۰ سوت</span><span class="coin-sub">۰.۵۰۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.55"><span class="coin-name">۵۵۰ سوت</span><span class="coin-sub">۰.۵۵۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.60"><span class="coin-name">۶۰۰ سوت</span><span class="coin-sub">۰.۶۰۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.65"><span class="coin-name">۶۵۰ سوت</span><span class="coin-sub">۰.۶۵۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.70"><span class="coin-name">۷۰۰ سوت</span><span class="coin-sub">۰.۷۰۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.75"><span class="coin-name">۷۵۰ سوت</span><span class="coin-sub">۰.۷۵۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.80"><span class="coin-name">۸۰۰ سوت</span><span class="coin-sub">۰.۸۰۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.85"><span class="coin-name">۸۵۰ سوت</span><span class="coin-sub">۰.۸۵۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.90"><span class="coin-name">۹۰۰ سوت</span><span class="coin-sub">۰.۹۰۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="0.95"><span class="coin-name">۹۵۰ سوت</span><span class="coin-sub">۰.۹۵۰ گرم</span></label>
+            <label class="karat-btn"><input type="radio" name="par-wt" value="1.00"><span class="coin-name">۱۰۰۰ سوت</span><span class="coin-sub">۱.۰۰۰ گرم</span></label>
+          </div>
+          <div id="par-wt-info" class="karat-info">
+            سکه انتخابی: <b id="par-wt-txt">۵۰ سوت — ۰.۰۵۰ گرم</b> — عیار ۱۸ (۷۵۰)
+          </div>
         </div>
-        <div class="form-grid" style="margin-top:18px;">
+
+        <div class="form-grid">
           <div class="form-group">
-            <label><i class="fas fa-tag"></i> قیمت هر گرم طلای ۱۸ عیار (تومان)</label>
-            <input type="text" id="p-gprice" data-type="int" value="4,500,000" class="num-input">
+            <label><i class="fas fa-tag"></i> قیمت هر گرم طلای ۱۸ عیار (ریال)</label>
+            <input type="text" id="p-gprice" data-type="int" value="" placeholder="مثال: 450,000,000,000" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-hashtag"></i> تعداد سکه</label>
-            <input type="text" id="p-count" data-type="int" value="10" class="num-input">
+            <input type="text" id="p-count" data-type="int" value="10" placeholder="مثال: 10" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-percent"></i> حق ضرب / کارمزد (%)</label>
-            <input type="text" id="p-prem" data-type="float" value="5" class="num-input">
+            <input type="text" id="p-prem" data-type="float" value="5" placeholder="مثال: 5" class="num-input">
           </div>
         </div>
-        <button class="calc-btn" onclick="calcParsian()"><i class="fas fa-calculator"></i> محاسبه قیمت سکه‌های پارسیان</button>
+        <div style="display:flex;gap:10px;">
+        <button class="calc-btn" onclick="calcParsian()" style="flex:1;"><i class="fas fa-calculator"></i> محاسبه قیمت سکه‌های پارسیان</button>
+        <button class="calc-btn secondary" onclick="resetParsian()" style="flex:0 0 auto;padding:10px 14px;font-size:14px;min-width:auto;width:auto;" title="ریست فرم"><i class="fas fa-rotate-left"></i></button>
+        </div>
       </div>
+
       <div id="res-parsian" class="results">
         <div class="card">
           <div class="result-cards">
@@ -804,20 +1174,27 @@
       </div>
     </div>
 
-  </div><!-- /container -->
+  </div>
 
   <script>
-    // ─── THEME TOGGLE ───
-    function toggleTheme() {
-      const html = document.documentElement;
-      const isDark = html.getAttribute('data-theme') === 'dark';
-      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      document.getElementById('themeLabel').textContent = isDark ? 'حالت روشن' : 'حالت تاریک';
+    // ─── تم روشن/تاریک ──────────────────────────────
+    function applyTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
       const icon = document.getElementById('themeIcon');
-      icon.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+      if (icon) icon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+      try { localStorage.setItem('davar_theme', theme); } catch (e) {}
     }
+    function toggleTheme() {
+      const current = document.body.getAttribute('data-theme') || 'dark';
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+    }
+    (function initTheme() {
+      let saved = 'dark';
+      try { saved = localStorage.getItem('davar_theme') || 'dark'; } catch (e) {}
+      document.addEventListener('DOMContentLoaded', () => applyTheme(saved));
+    })();
 
-    // ─── NUMBER FORMATTING ───
+    // ─── جداکننده سه‌رقمی هنگام تایپ ──────────────
     function addCommas(raw) {
       if (!raw) return '';
       const parts = raw.split('.');
@@ -825,46 +1202,94 @@
       return parts.join('.');
     }
 
+    // ─── تبدیل اعداد فارسی و عربی به انگلیسی ──────────
+    function toEnglishDigits(str) {
+      if (!str) return str;
+      str = str.replace(/[۰-۹]/g, function(d) {
+        return String.fromCharCode(d.charCodeAt(0) - 1728);
+      });
+      str = str.replace(/[٠-٩]/g, function(d) {
+        return String.fromCharCode(d.charCodeAt(0) - 1632);
+      });
+      str = str.replace(/[٫،]/g, '.');
+      return str;
+    }
+
     function onNumInput(e) {
       const el = e.target;
       const isFloat = el.dataset.type === 'float';
-      const cur = el.selectionStart;
+      const cursorPos = el.selectionStart;
       const oldLen = el.value.length;
-      let raw = el.value.replace(/[^0-9.]/g, '');
+
+      let raw = toEnglishDigits(el.value);
+      raw = raw.replace(/[^0-9.]/g, '');
       if (!isFloat) raw = raw.replace(/\./g, '');
-      const fd = raw.indexOf('.');
-      if (fd !== -1) raw = raw.slice(0, fd + 1) + raw.slice(fd + 1).replace(/\./g, '');
-      const fmt = addCommas(raw);
-      el.value = fmt;
-      const diff = fmt.length - oldLen;
-      const np = Math.max(0, cur + diff);
-      el.setSelectionRange(np, np);
+      const firstDot = raw.indexOf('.');
+      if (firstDot !== -1) raw = raw.slice(0, firstDot + 1) + raw.slice(firstDot + 1).replace(/\./g, '');
+      const formatted = addCommas(raw);
+      el.value = formatted;
+      const diff = formatted.length - oldLen;
+      const newPos = Math.max(0, cursorPos + diff);
+      el.setSelectionRange(newPos, newPos);
     }
 
     function getVal(id) {
-      return parseFloat(document.getElementById(id).value.replace(/,/g, '')) || 0;
+      const raw = document.getElementById(id).value;
+      const normalized = toEnglishDigits(raw).replace(/,/g, '');
+      return parseFloat(normalized) || 0;
     }
 
     function fmt(n) {
-      return Math.round(n).toLocaleString('fa-IR') + ' تومان';
+      return Math.round(n).toLocaleString('fa-IR') + ' ریال';
     }
 
-    // ─── TABS ───
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.num-input').forEach(el => {
+        el.addEventListener('input', onNumInput);
+        if (el.dataset.type === 'int') {
+          const raw = el.value.replace(/,/g, '');
+          if (raw) el.value = addCommas(raw);
+        }
+      });
+
+      addMixRow(750, '', '');
+      addNmixRow(750, '', '');
+
+      ['nmix-gprice','nmix-making','nmix-profit'].forEach(function(id) {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('input', function() {
+            onNumInput({ target: this });
+            syncNmixCalc();
+          });
+        }
+      });
+
+      const mixGP = document.getElementById('mix-gprice');
+      if (mixGP) {
+        mixGP.addEventListener('input', function() {
+          onNumInput({ target: this });
+          syncMixCalc();
+        });
+      }
+    });
+
     function switchTab(name, btn) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
-      document.getElementById('tab-' + name).classList.add('active');
+      const tabEl = document.getElementById('tab-' + name);
+      if (tabEl) tabEl.classList.add('active');
     }
 
-    // ─── CHART ───
     function makePie(canvasId, data, labels, colors, legendId) {
       const existing = Chart.getChart(canvasId);
       if (existing) existing.destroy();
+      const isDark = document.body.getAttribute('data-theme') !== 'light';
       new Chart(document.getElementById(canvasId), {
         type: 'doughnut',
-        data: { labels, datasets: [{ data, backgroundColor: colors, borderWidth: 2, borderColor: getComputedStyle(document.documentElement).getPropertyValue('--card').trim() || '#18181f' }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '62%', plugins: { legend: { display: false } } }
+        data: { labels, datasets: [{ data, backgroundColor: colors, borderWidth: 3, borderColor: isDark ? '#1a1a1a' : '#ffffff' }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
       });
       const total = data.reduce((a, b) => a + b, 0);
       document.getElementById(legendId).innerHTML = labels.map((l, i) =>
@@ -872,57 +1297,18 @@
       ).join('');
     }
 
-    // ─── SETUP RADIO GROUPS ───
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.num-input').forEach(el => {
-        el.addEventListener('input', onNumInput);
-      });
-      // radio groups
-      ['u-karat', 'coin-type', 'par-wt'].forEach(name => {
-        document.querySelectorAll(`input[name="${name}"]`).forEach(radio => {
-          radio.addEventListener('change', function () {
-            document.querySelectorAll(`input[name="${name}"]`).forEach(r => r.parentElement.classList.remove('active'));
-            this.parentElement.classList.add('active');
-            if (name === 'u-karat') {
-              const k = parseInt(this.value);
-              const ratio = k / 750;
-              document.getElementById('u-ratio-txt').textContent = ratio.toFixed(4) + (k === 750 ? ' (مبنا)' : ` (${k}÷۷۵۰)`);
-            }
-            if (name === 'coin-type') {
-              const n = this.parentElement.querySelector('.coin-name').textContent;
-              const s = this.parentElement.querySelector('.coin-sub').textContent;
-              document.getElementById('c-coin-txt').textContent = `${n} — ${s}`;
-            }
-            if (name === 'par-wt') {
-              const n = this.parentElement.querySelector('.coin-name').textContent;
-              const s = this.parentElement.querySelector('.coin-sub').textContent;
-              document.getElementById('par-wt-txt').textContent = `${n} — ${s}`;
-            }
-          });
-        });
-      });
-    });
-
-    function getSelected(name) {
-      const r = document.querySelector(`input[name="${name}"]:checked`);
-      return r ? r.value : null;
-    }
-
-    // ─── طلای نو ───
     function calcNew() {
       const gp = getVal('n-gprice');
       const wt = getVal('n-weight');
       const mk = getVal('n-making');
       const pr = getVal('n-profit');
-
-      const makerAmt = gp * (mk / 100);
+      const makerAmt   = gp * (mk / 100);
       const afterMaking = gp + makerAmt;
-      const sellerAmt = afterMaking * (pr / 100);
+      const sellerAmt  = afterMaking * (pr / 100);
       const afterSeller = afterMaking + sellerAmt;
-      const tax = 0.10 * (makerAmt + sellerAmt);
+      const tax         = 0.10 * (makerAmt + sellerAmt);
       const pricePerGram = afterSeller + tax;
       const total = pricePerGram * wt;
-
       document.getElementById('n-raw').textContent = fmt(gp);
       document.getElementById('n-mc').textContent = fmt(makerAmt);
       document.getElementById('n-sp').textContent = fmt(sellerAmt);
@@ -930,19 +1316,185 @@
       document.getElementById('n-pgram').textContent = fmt(pricePerGram);
       document.getElementById('n-final').textContent = fmt(total);
       document.getElementById('res-new').classList.add('show');
-
-      makePie('chartNew',
-        [gp * wt, makerAmt * wt, sellerAmt * wt, tax * wt],
+      makePie('chartNew', [gp * wt, makerAmt * wt, sellerAmt * wt, tax * wt],
         ['قیمت پایه', 'اجرت سازنده', 'سود فروشنده', 'مالیات'],
         ['#3d7a4e', '#6B9FD4', '#6DC47B', '#E47D7D'], 'n-legend');
     }
 
-    // ─── دست دوم ───
+    function resetNew() {
+      document.getElementById('n-customer').value = '';
+      document.getElementById('n-itemname').value = '';
+      document.getElementById('n-gprice').value = '';
+      document.getElementById('n-weight').value = '5.2';
+      document.getElementById('n-making').value = '10';
+      document.getElementById('n-profit').value = '7';
+      const res = document.getElementById('res-new');
+      if (res) res.classList.remove('show');
+    }
+
+    function fmtWeight(n) {
+      return (Math.round(n * 1000) / 1000).toFixed(3) + ' گرم';
+    }
+
+    function calcG2G() {
+      const wt = getVal('g2g-weight');
+      const mk = getVal('g2g-making');
+      const pr = getVal('g2g-profit');
+      const taxEnabled = document.getElementById('cb-g2g-tax').checked;
+      const makerAmt    = wt * (mk / 100);
+      const afterMaking = wt + makerAmt;
+      const sellerAmt   = afterMaking * (pr / 100);
+      const afterSeller = afterMaking + sellerAmt;
+      const tax          = taxEnabled ? 0.10 * (makerAmt + sellerAmt) : 0;
+      const finalWeight  = afterSeller + tax;
+
+      document.getElementById('g2g-raw').textContent = fmtWeight(wt);
+      document.getElementById('g2g-mc').textContent = fmtWeight(makerAmt);
+      document.getElementById('g2g-sp').textContent = fmtWeight(sellerAmt);
+      document.getElementById('g2g-tx').textContent = taxEnabled ? fmtWeight(tax) : 'محاسبه نشده';
+      document.getElementById('g2g-pgram').textContent = fmtWeight(finalWeight);
+      document.getElementById('g2g-final').textContent = fmtWeight(finalWeight);
+      document.getElementById('res-g2g').classList.add('show');
+
+      const pieData   = taxEnabled ? [wt, makerAmt, sellerAmt, tax] : [wt, makerAmt, sellerAmt];
+      const pieLabels = taxEnabled ? ['وزن پایه', 'اجرت سازنده', 'سود فروشنده', 'مالیات'] : ['وزن پایه', 'اجرت سازنده', 'سود فروشنده'];
+      const pieColors = taxEnabled ? ['#3d7a4e', '#6B9FD4', '#6DC47B', '#E47D7D'] : ['#3d7a4e', '#6B9FD4', '#6DC47B'];
+      makePie('chartG2G', pieData, pieLabels, pieColors, 'g2g-legend');
+    }
+
+    function resetG2G() {
+      document.getElementById('g2g-customer').value = '';
+      document.getElementById('g2g-itemname').value = '';
+      document.getElementById('g2g-weight').value = '';
+      document.getElementById('g2g-making').value = '10';
+      document.getElementById('g2g-profit').value = '7';
+      const cb = document.getElementById('cb-g2g-tax');
+      if (cb) cb.checked = false;
+      const res = document.getElementById('res-g2g');
+      if (res) res.classList.remove('show');
+    }
+
+    // متدهای مربوط به چند عیار و سایر تب‌ها حفظ شده‌اند
+    function addNmixRow(karat = 750, name = '', weight = '') {
+      const tbody = document.getElementById('nmix-rows');
+      if (!tbody) return;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><input type="text" class="nmix-name" value="${name}" placeholder="نام قطعه"></td>
+        <td>
+          <select class="nmix-karat" onchange="syncNmixCalc()">
+            <option value="750" ${karat==750?'selected':''}>عیار ۱۸ (۷۵۰)</option>
+            <option value="708" ${karat==708?'selected':''}>عیار ۱۷ (۷۰۸)</option>
+            <option value="900" ${karat==900?'selected':''}>عیار ۲۱.۶ (۹۰۰)</option>
+            <option value="999" ${karat==999?'selected':''}>عیار ۲۴ (۹۹۹)</option>
+            <option value="740" ${karat==740?'selected':''}>عیار ۷۴۰</option>
+          </select>
+        </td>
+        <td><input type="text" class="nmix-wt num-input" data-type="float" value="${weight}" placeholder="وزن" oninput="onNumInput(event);syncNmixCalc()"></td>
+        <td><span class="nmix-row-val" style="font-weight:700;color:var(--ember);">—</span></td>
+        <td style="text-align:center;"><button type="button" class="del-btn" onclick="this.closest('tr').remove();syncNmixCalc()"><i class="fas fa-trash"></i></button></td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    function syncNmixCalc() {
+      const gp = getVal('nmix-gprice');
+      const mk = getVal('nmix-making');
+      const pr = getVal('nmix-profit');
+      let total = 0;
+      let detailsHtml = '';
+      document.querySelectorAll('#nmix-rows tr').forEach((tr, idx) => {
+        const name = tr.querySelector('.nmix-name').value || ('قطعه ' + (idx + 1));
+        const karat = parseFloat(tr.querySelector('.nmix-karat').value);
+        const wt = parseFloat(toEnglishDigits(tr.querySelector('.nmix-wt').value.replace(/,/g, ''))) || 0;
+        const ratio = karat / 750;
+        const basePriceKarat = gp * ratio;
+        const makerAmt = basePriceKarat * (mk / 100);
+        const afterMaking = basePriceKarat + makerAmt;
+        const sellerAmt = afterMaking * (pr / 100);
+        const afterSeller = afterMaking + sellerAmt;
+        const tax = 0.10 * (makerAmt + sellerAmt);
+        const pricePerGram = afterSeller + tax;
+        const rowTotal = pricePerGram * wt;
+        tr.querySelector('.nmix-row-val').textContent = rowTotal > 0 ? fmt(rowTotal) : '—';
+        if (rowTotal > 0) {
+          total += rowTotal;
+          detailsHtml += `<div style="display:flex;justify-content:between;background:var(--surface2);padding:8px 12px;border-radius:8px;font-size:13px;"><span><b>${name}</b> (${wt} گرم):</span><span style="color:var(--ember);font-weight:700;">${fmt(rowTotal)}</span></div>`;
+        }
+      });
+      const resBox = document.getElementById('res-nmixed');
+      if (total > 0) {
+        document.getElementById('nmix-final').textContent = fmt(total);
+        document.getElementById('nmix-detail-list').innerHTML = detailsHtml;
+        resBox.classList.add('show');
+      } else {
+        resBox.classList.remove('show');
+      }
+    }
+
+    function calcNmixed() {
+      syncNmixCalc();
+    }
+
+    function addMixRow(karat = 750, name = '', weight = '') {
+      const tbody = document.getElementById('mix-rows');
+      if (!tbody) return;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><input type="text" class="mix-name" value="${name}" placeholder="نام قطعه"></td>
+        <td>
+          <select class="mix-karat" onchange="syncMixCalc()">
+            <option value="750" ${karat==750?'selected':''}>عیار ۱۸ (۷۵۰)</option>
+            <option value="740" ${karat==740?'selected':''}>عیار ۷۴۰</option>
+            <option value="735" ${karat==735?'selected':''}>عیار ۷۳۵</option>
+            <option value="730" ${karat==730?'selected':''}>عیار ۷۳۰</option>
+            <option value="708" ${karat==708?'selected':''}>عیار ۱۷ (۷۰۸)</option>
+          </select>
+        </td>
+        <td><input type="text" class="mix-wt num-input" data-type="float" value="${weight}" placeholder="وزن" oninput="onNumInput(event);syncMixCalc()"></td>
+        <td><span class="mix-row-val" style="font-weight:700;color:var(--ember);">—</span></td>
+        <td style="text-align:center;"><button type="button" class="del-btn" onclick="this.closest('tr').remove();syncMixCalc()"><i class="fas fa-trash"></i></button></td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    function syncMixCalc() {
+      const gp = getVal('mix-gprice');
+      let total = 0;
+      let detailsHtml = '';
+      document.querySelectorAll('#mix-rows tr').forEach((tr, idx) => {
+        const name = tr.querySelector('.mix-name').value || ('قطعه ' + (idx + 1));
+        const karat = parseFloat(tr.querySelector('.mix-karat').value);
+        const wt = parseFloat(toEnglishDigits(tr.querySelector('.mix-wt').value.replace(/,/g, ''))) || 0;
+        const ratio = karat / 750;
+        const rowVal = gp * ratio * wt;
+        tr.querySelector('.mix-row-val').textContent = rowVal > 0 ? fmt(rowVal) : '—';
+        if (rowVal > 0) {
+          total += rowVal;
+          detailsHtml += `<div style="display:flex;justify-content:between;background:var(--surface2);padding:8px 12px;border-radius:8px;font-size:13px;"><span><b>${name}</b> (${wt} گرم):</span><span style="color:var(--ember);font-weight:700;">${fmt(rowVal)}</span></div>`;
+        }
+      });
+      const resBox = document.getElementById('res-mixed');
+      if (total > 0) {
+        document.getElementById('mix-final').textContent = fmt(total);
+        document.getElementById('mix-detail-list').innerHTML = detailsHtml;
+        resBox.classList.add('show');
+      } else {
+        resBox.classList.remove('show');
+      }
+    }
+
+    function calcMixed() {
+      syncMixCalc();
+    }
+
     function calcUsed() {
-      const gp18 = getVal('u-gprice');
+      const gp = getVal('u-gprice');
       const wt = getVal('u-weight');
-      const karat = parseInt(getSelected('u-karat') || '750');
-      const adjPrice = gp18 * (karat / 750);
+      const karatRadio = document.querySelector('input[name="u-karat"]:checked');
+      const karat = karatRadio ? parseFloat(karatRadio.value) : 750;
+      const ratio = karat / 750;
+      const adjPrice = gp * ratio;
       const total = adjPrice * wt;
       document.getElementById('u-adjprice').textContent = fmt(adjPrice);
       document.getElementById('u-raw').textContent = fmt(total);
@@ -950,55 +1502,86 @@
       document.getElementById('res-used').classList.add('show');
     }
 
-    // ─── آبشده ───
+    function resetUsed() {
+      document.getElementById('u-gprice').value = '';
+      document.getElementById('u-weight').value = '3.8';
+      const res = document.getElementById('res-used');
+      if (res) res.classList.remove('show');
+    }
+
     function calcMelted() {
       const gp = getVal('m-gprice');
       const wt = getVal('m-weight');
       const comm = getVal('m-comm');
       const raw = gp * wt;
-      const fee = raw * comm / 100;
-      const final = raw + fee;
+      const feeAmt = raw * (comm / 100);
+      const total = raw + feeAmt;
       document.getElementById('m-raw').textContent = fmt(raw);
-      document.getElementById('m-fee').textContent = fmt(fee);
-      document.getElementById('m-final').textContent = fmt(final);
+      document.getElementById('m-fee').textContent = fmt(feeAmt);
+      document.getElementById('m-final').textContent = fmt(total);
       document.getElementById('res-melted').classList.add('show');
     }
 
-    // ─── سکه بهار ───
-    const COIN_LABELS = { '8.133': 'تمام سکه', '4.066': 'نیم سکه', '2.033': 'ربع سکه', '1.01': 'سکه گرمی' };
+    function resetMelted() {
+      document.getElementById('m-gprice').value = '';
+      document.getElementById('m-weight').value = '10';
+      document.getElementById('m-comm').value = '1';
+      const res = document.getElementById('res-melted');
+      if (res) res.classList.remove('show');
+    }
+
     function calcCoin() {
-      const cp = getVal('c-price');
-      const cnt = getVal('c-count');
-      const cm = getVal('c-comm');
-      const wt = parseFloat(getSelected('coin-type') || '8.133');
-      const base = cp * cnt;
-      const fee = base * cm / 100;
-      const final = base + fee;
-      document.getElementById('c-type-lbl').textContent = COIN_LABELS[wt.toString()] || '—';
+      const coinRadio = document.querySelector('input[name="coin-type"]:checked');
+      const wt = coinRadio ? parseFloat(coinRadio.value) : 8.133;
+      const pricePerCoin = getVal('c-price');
+      const count = getVal('c-count');
+      const comm = getVal('c-comm');
+      const baseTotal = pricePerCoin * count;
+      const feeAmt = baseTotal * (comm / 100);
+      const total = baseTotal + feeAmt;
+
+      document.getElementById('c-type-lbl').textContent = coinRadio ? coinRadio.closest('.karat-btn').querySelector('.coin-name').textContent : 'تمام سکه';
       document.getElementById('c-weight-lbl').textContent = wt + ' گرم';
-      document.getElementById('c-base').textContent = fmt(base);
-      document.getElementById('c-fee').textContent = fmt(fee);
-      document.getElementById('c-final').textContent = fmt(final);
+      document.getElementById('c-base').textContent = fmt(baseTotal);
+      document.getElementById('c-fee').textContent = fmt(feeAmt);
+      document.getElementById('c-final').textContent = fmt(total);
       document.getElementById('res-coin').classList.add('show');
     }
 
-    // ─── سکه پارسیان ───
+    function resetCoin() {
+      document.getElementById('c-price').value = '8,500,000,000,000';
+      document.getElementById('c-count').value = '3';
+      document.getElementById('c-comm').value = '0.5';
+      const res = document.getElementById('res-coin');
+      if (res) res.classList.remove('show');
+    }
+
     function calcParsian() {
+      const parRadio = document.querySelector('input[name="par-wt"]:checked');
+      const wt = parRadio ? parseFloat(parRadio.value) : 0.05;
       const gp = getVal('p-gprice');
-      const cnt = getVal('p-count');
+      const count = getVal('p-count');
       const prem = getVal('p-prem');
-      const wt = parseFloat(getSelected('par-wt') || '0.05');
-      const baseEach = gp * wt;
-      const premEach = baseEach * prem / 100;
-      const eachFinal = baseEach + premEach;
-      const total = eachFinal * cnt;
+      const baseUnit = gp * wt * (750 / 750);
+      const premUnit = baseUnit * (prem / 100);
+      const eachTotal = baseUnit + premUnit;
+      const total = eachTotal * count;
+
       document.getElementById('p-wt-lbl').textContent = wt + ' گرم';
-      document.getElementById('p-unit').textContent = fmt(baseEach);
-      document.getElementById('p-prem-v').textContent = fmt(premEach);
-      document.getElementById('p-each').textContent = fmt(eachFinal);
+      document.getElementById('p-unit').textContent = fmt(baseUnit);
+      document.getElementById('p-prem-v').textContent = fmt(premUnit);
+      document.getElementById('p-each').textContent = fmt(eachTotal);
       document.getElementById('p-final').textContent = fmt(total);
       document.getElementById('res-parsian').classList.add('show');
-      makePie('chartParsian', [baseEach, premEach], ['ارزش طلا', 'حق ضرب'], ['#3d7a4e', '#e85d04'], 'p-legend');
+      makePie('chartParsian', [baseUnit, premUnit], ['قیمت پایه', 'حق ضرب'], ['#3d7a4e', '#E47D7D'], 'p-legend');
+    }
+
+    function resetParsian() {
+      document.getElementById('p-gprice').value = '';
+      document.getElementById('p-count').value = '10';
+      document.getElementById('p-prem').value = '5';
+      const res = document.getElementById('res-parsian');
+      if (res) res.classList.remove('show');
     }
   </script>
 </body>
