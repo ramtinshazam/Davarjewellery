@@ -848,6 +848,18 @@
     .invoice-footer { flex-direction: column; align-items: flex-start; gap: 16px; }
     .invoice-footer .footer-note { max-width: 100%; }
 
+    /* جلوگیری از زوم خودکار سافاری روی فوکوس ورودی + تارگت‌های لمسی بزرگ‌تر */
+    .form-group input,
+    .form-group select {
+      font-size: 16px;
+      padding: 13px 14px;
+      min-height: 46px;
+    }
+    .form-group label { font-size: 10.5px; }
+    .calc-btn { min-height: 48px; font-size: 15px; }
+    .toggle-btn, .karat-btn { min-height: 44px; }
+    .card-title { font-size: 15px; }
+
     .app-body { flex-direction: column-reverse; }
     .sidebar {
       width: 100%;
@@ -863,9 +875,13 @@
       top: auto;
       gap: 4px;
       background: var(--topbar-bg);
+      /* اسکرول‌بار افقی نامرئی برای دسترسی روان به تب بیشتر */
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
     }
+    .sidebar::-webkit-scrollbar { display: none; }
     .sidebar-title { display: none; }
-    .sidebar .tab-btn { flex: 1; min-width: 66px; min-height: 56px; padding: 9px 5px; }
+    .sidebar .tab-btn { flex: 1; min-width: 66px; min-height: 56px; padding: 9px 5px; scroll-snap-align: start; }
     .sidebar .tab-btn .tab-icon { font-size: 19px; }
     .sidebar .tab-btn .tab-label { font-size: 10px; }
   }
@@ -1131,6 +1147,18 @@
         <span class="tab-icon">🏅</span>
         <span class="tab-label">پارسیان</span>
       </button>
+      <button class="tab-btn" onclick="switchTab('rev',this)">
+        <span class="tab-icon">🎯</span>
+        <span class="tab-label">محاسبه معکوس</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('karatcmp',this)">
+        <span class="tab-icon">⚖️</span>
+        <span class="tab-label">مقایسه عیار</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('installment',this)">
+        <span class="tab-icon">🧾</span>
+        <span class="tab-label">قسط / چک</span>
+      </button>
     </nav>
 
     <!-- محتوای اصلی -->
@@ -1150,19 +1178,19 @@
         <div class="form-grid">
           <div class="form-group">
             <label><i class="fas fa-tag"></i> قیمت هر گرم طلا (ریال)</label>
-            <input type="text" id="n-gprice" data-type="int" value="" placeholder="قیمت هر گرم طلای ۱۸ عیار (ریال)" class="num-input">
+            <input type="text" id="n-gprice" data-type="int" value="" placeholder="قیمت هر گرم طلای ۱۸ عیار (ریال)" inputmode="decimal" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-weight-scale"></i> وزن (گرم)</label>
-            <input type="text" id="n-weight" data-type="float" value="" placeholder="مثال: 5.2" class="num-input">
+            <input type="text" id="n-weight" data-type="float" value="" placeholder="مثال: 5.2" inputmode="decimal" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-percent"></i> درصد سود سازنده / اجرت (%)</label>
-            <input type="text" id="n-making" data-type="float" value="10" placeholder="مثال: 7" class="num-input">
+            <input type="text" id="n-making" data-type="float" value="10" placeholder="مثال: 7" inputmode="decimal" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-percent"></i> درصد سود فروشنده (%)</label>
-            <input type="text" id="n-profit" data-type="float" value="7" placeholder="مثال: 3" class="num-input">
+            <input type="text" id="n-profit" data-type="float" value="7" placeholder="مثال: 3" inputmode="decimal" class="num-input">
           </div>
         </div>
 
@@ -1213,15 +1241,15 @@
         <div class="form-grid">
           <div class="form-group">
             <label><i class="fas fa-weight-scale"></i> وزن پایه طلا (گرم)</label>
-            <input type="text" id="g2g-weight" data-type="float" value="" placeholder="مثال: 5.2" class="num-input">
+            <input type="text" id="g2g-weight" data-type="float" value="" placeholder="مثال: 5.2" inputmode="decimal" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-percent"></i> درصد سود سازنده / اجرت (%)</label>
-            <input type="text" id="g2g-making" data-type="float" value="10" placeholder="مثال: 10" class="num-input">
+            <input type="text" id="g2g-making" data-type="float" value="10" placeholder="مثال: 10" inputmode="decimal" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-percent"></i> درصد سود فروشنده (%)</label>
-            <input type="text" id="g2g-profit" data-type="float" value="7" placeholder="مثال: 7" class="num-input">
+            <input type="text" id="g2g-profit" data-type="float" value="7" placeholder="مثال: 7" inputmode="decimal" class="num-input">
           </div>
         </div>
 
@@ -1272,15 +1300,15 @@
         <div class="form-grid" style="margin-bottom:16px;">
           <div class="form-group">
             <label><i class="fas fa-tag"></i> قیمت مبنا (هر گرم طلای ۱۸ عیار — ریال)</label>
-            <input type="text" id="nmix-gprice" data-type="int" value="" placeholder="قیمت هر گرم طلای ۱۸ عیار (ریال)" class="num-input">
+            <input type="text" id="nmix-gprice" data-type="int" value="" placeholder="قیمت هر گرم طلای ۱۸ عیار (ریال)" inputmode="decimal" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-percent"></i> اجرت سازنده (%)</label>
-            <input type="text" id="nmix-making" data-type="float" value="10" placeholder="مثال: 7" class="num-input" oninput="syncNmixCalc()">
+            <input type="text" id="nmix-making" data-type="float" value="10" placeholder="مثال: 7" inputmode="decimal" class="num-input" oninput="syncNmixCalc()">
           </div>
           <div class="form-group">
             <label><i class="fas fa-percent"></i> سود فروشنده (%)</label>
-            <input type="text" id="nmix-profit" data-type="float" value="7" placeholder="مثال: 3" class="num-input" oninput="syncNmixCalc()">
+            <input type="text" id="nmix-profit" data-type="float" value="7" placeholder="مثال: 3" inputmode="decimal" class="num-input" oninput="syncNmixCalc()">
           </div>
         </div>
 
@@ -1347,11 +1375,11 @@
         <div class="form-grid">
           <div class="form-group">
             <label><i class="fas fa-tag"></i> قیمت هر گرم طلای ۱۸ عیار (ریال)</label>
-            <input type="text" id="u-gprice" data-type="int" value="" placeholder="مثال: 450,000,000,000" class="num-input">
+            <input type="text" id="u-gprice" data-type="int" value="" placeholder="مثال: 450,000,000,000" inputmode="decimal" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-weight-scale"></i> وزن (گرم)</label>
-            <input type="text" id="u-weight" data-type="float" value="3.8" placeholder="مثال: 3.8" class="num-input">
+            <input type="text" id="u-weight" data-type="float" value="3.8" placeholder="مثال: 3.8" inputmode="decimal" class="num-input">
           </div>
         </div>
         <div style="display:flex;gap:10px;">
@@ -1384,7 +1412,7 @@
         <div style="margin-bottom:16px;">
           <div style="font-size:15px;color:var(--text-muted);margin-bottom:10px;">قیمت مبنا (هر گرم طلای ۱۸ عیار — ریال):</div>
           <div class="form-group" style="max-width:340px;">
-            <input type="text" id="mix-gprice" data-type="int" value="" placeholder="قیمت هر گرم طلای ۱۸ عیار (ریال)" class="num-input">
+            <input type="text" id="mix-gprice" data-type="int" value="" placeholder="قیمت هر گرم طلای ۱۸ عیار (ریال)" inputmode="decimal" class="num-input">
           </div>
         </div>
 
@@ -1440,15 +1468,15 @@
         <div class="form-grid">
           <div class="form-group">
             <label><i class="fas fa-tag"></i> قیمت هر گرم طلا (ریال)</label>
-            <input type="text" id="m-gprice" data-type="int" value="" placeholder="مثال: 450,000,000,000" class="num-input">
+            <input type="text" id="m-gprice" data-type="int" value="" placeholder="مثال: 450,000,000,000" inputmode="decimal" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-weight-scale"></i> وزن (گرم)</label>
-            <input type="text" id="m-weight" data-type="float" value="10" placeholder="مثال: 10" class="num-input">
+            <input type="text" id="m-weight" data-type="float" value="10" placeholder="مثال: 10" inputmode="decimal" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-percent"></i> کارمزد (%)</label>
-            <input type="text" id="m-comm" data-type="float" value="1" placeholder="مثال: 1" class="num-input">
+            <input type="text" id="m-comm" data-type="float" value="1" placeholder="مثال: 1" inputmode="decimal" class="num-input">
           </div>
         </div>
         <div style="display:flex;gap:10px;">
@@ -1512,15 +1540,15 @@
         <div class="form-grid">
           <div class="form-group">
             <label><i class="fas fa-tag"></i> قیمت بازار هر سکه (ریال)</label>
-            <input type="text" id="c-price" data-type="int" value="8,500,000,000,000" placeholder="مثال: 8,500,000,000,000" class="num-input">
+            <input type="text" id="c-price" data-type="int" value="8,500,000,000,000" placeholder="مثال: 8,500,000,000,000" inputmode="decimal" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-hashtag"></i> تعداد</label>
-            <input type="text" id="c-count" data-type="int" value="3" placeholder="مثال: 3" class="num-input">
+            <input type="text" id="c-count" data-type="int" value="3" placeholder="مثال: 3" inputmode="decimal" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-percent"></i> کارمزد (%)</label>
-            <input type="text" id="c-comm" data-type="float" value="0.5" placeholder="مثال: 0.5" class="num-input">
+            <input type="text" id="c-comm" data-type="float" value="0.5" placeholder="مثال: 0.5" inputmode="decimal" class="num-input">
           </div>
         </div>
         <div style="display:flex;gap:10px;">
@@ -1586,15 +1614,15 @@
         <div class="form-grid">
           <div class="form-group">
             <label><i class="fas fa-tag"></i> قیمت هر گرم طلای ۱۸ عیار (ریال)</label>
-            <input type="text" id="p-gprice" data-type="int" value="" placeholder="مثال: 450,000,000,000" class="num-input">
+            <input type="text" id="p-gprice" data-type="int" value="" placeholder="مثال: 450,000,000,000" inputmode="decimal" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-hashtag"></i> تعداد سکه</label>
-            <input type="text" id="p-count" data-type="int" value="10" placeholder="مثال: 10" class="num-input">
+            <input type="text" id="p-count" data-type="int" value="10" placeholder="مثال: 10" inputmode="decimal" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-percent"></i> حق ضرب / کارمزد (%)</label>
-            <input type="text" id="p-prem" data-type="float" value="5" placeholder="مثال: 5" class="num-input">
+            <input type="text" id="p-prem" data-type="float" value="5" placeholder="مثال: 5" inputmode="decimal" class="num-input">
           </div>
         </div>
         <div style="display:flex;gap:10px;">
@@ -1620,6 +1648,164 @@
           <div class="chart-title"><i class="fas fa-chart-pie"></i> ترکیب قیمت هر سکه</div>
           <div class="legend" id="p-legend"></div>
           <div class="chart-wrap"><canvas id="chartParsian"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: محاسبه معکوس -->
+    <div id="tab-rev" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fas fa-bullseye"></i> محاسبه معکوس (بودجه ← وزن)</div>
+        <div class="info-note">
+          <i class="fas fa-info-circle"></i>
+          <span>بودجه مشتری را وارد کنید تا وزن طلای نویی که با آن قابل خرید است، بر اساس اجرت و سود مشخص‌شده محاسبه شود.</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label><i class="fas fa-tag"></i> قیمت هر گرم طلای ۱۸ عیار (ریال)</label>
+            <input type="text" id="rev-gprice" data-type="int" value="" placeholder="قیمت هر گرم طلای ۱۸ عیار (ریال)" inputmode="decimal" class="num-input">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-wallet"></i> بودجه مشتری (ریال)</label>
+            <input type="text" id="rev-budget" data-type="int" value="" placeholder="مثال: 500,000,000" inputmode="decimal" class="num-input">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-percent"></i> درصد سود سازنده / اجرت (%)</label>
+            <input type="text" id="rev-making" data-type="float" value="10" placeholder="مثال: 10" inputmode="decimal" class="num-input">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-percent"></i> درصد سود فروشنده (%)</label>
+            <input type="text" id="rev-profit" data-type="float" value="7" placeholder="مثال: 7" inputmode="decimal" class="num-input">
+          </div>
+        </div>
+
+        <div style="margin:6px 0 16px;">
+          <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 14px;width:fit-content;">
+            <input type="checkbox" id="cb-rev-tax" style="accent-color:var(--gold);width:16px;height:16px;">
+            <i class="fas fa-percent" style="color:var(--gold);"></i> احتساب مالیات ۱۰٪ در محاسبه
+          </label>
+        </div>
+
+        <div style="display:flex;gap:10px;">
+        <button class="calc-btn" onclick="calcReverse()" style="flex:1;"><i class="fas fa-calculator"></i> محاسبه وزن قابل خرید</button>
+        <button class="calc-btn secondary" onclick="resetReverse()" style="flex:0 0 auto;padding:10px 14px;font-size:14px;min-width:auto;width:auto;" title="ریست فرم"><i class="fas fa-rotate-left"></i></button>
+        </div>
+      </div>
+
+      <div id="res-rev" class="results">
+        <div class="card">
+          <div class="result-cards">
+            <div class="rcard"><div class="val" id="rev-pgram">—</div><div class="lbl">قیمت هر گرم نهایی</div></div>
+            <div class="rcard"><div class="val" id="rev-mc">—</div><div class="lbl">سود سازنده (هر گرم)</div></div>
+            <div class="rcard"><div class="val" id="rev-sp">—</div><div class="lbl">سود فروشنده (هر گرم)</div></div>
+            <div class="rcard"><div class="val" id="rev-tx">—</div><div class="lbl">مالیات ۱۰٪</div></div>
+          </div>
+          <div class="final-box">
+            <span class="lbl"><i class="fas fa-weight-scale"></i> وزن قابل خرید با این بودجه</span>
+            <span class="price" id="rev-final">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: مقایسه عیارها -->
+    <div id="tab-karatcmp" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fas fa-scale-balanced"></i> مقایسه عیارها</div>
+        <div class="info-note">
+          <i class="fas fa-info-circle"></i>
+          <span>قیمت پایه (طلای ۱۸ عیار) و وزن را وارد کنید تا قیمت همان وزن در تمام عیارهای رایج مقایسه شود.</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label><i class="fas fa-tag"></i> قیمت هر گرم طلای ۱۸ عیار (ریال)</label>
+            <input type="text" id="kc-gprice" data-type="int" value="" placeholder="قیمت هر گرم طلای ۱۸ عیار (ریال)" inputmode="decimal" class="num-input">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-weight-scale"></i> وزن (گرم)</label>
+            <input type="text" id="kc-weight" data-type="float" value="" placeholder="مثال: 5.2" inputmode="decimal" class="num-input">
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;">
+        <button class="calc-btn" onclick="calcKaratCompare()" style="flex:1;"><i class="fas fa-calculator"></i> مقایسه عیارها</button>
+        <button class="calc-btn secondary" onclick="resetKaratCmp()" style="flex:0 0 auto;padding:10px 14px;font-size:14px;min-width:auto;width:auto;" title="ریست فرم"><i class="fas fa-rotate-left"></i></button>
+        </div>
+      </div>
+
+      <div id="res-karatcmp" class="results">
+        <div class="card">
+          <div style="overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;">
+              <thead>
+                <tr style="background:var(--gold);color:#fff;">
+                  <th style="padding:10px 12px;text-align:right;font-size:13px;border-radius:6px 0 0 0;">عیار</th>
+                  <th style="padding:10px 12px;text-align:right;font-size:13px;">ضریب نسبت به ۷۵۰</th>
+                  <th style="padding:10px 12px;text-align:right;font-size:13px;">قیمت هر گرم</th>
+                  <th style="padding:10px 12px;text-align:right;font-size:13px;border-radius:0 6px 0 0;">قیمت کل (این وزن)</th>
+                </tr>
+              </thead>
+              <tbody id="kc-rows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: محاسبه اقساط / چک -->
+    <div id="tab-installment" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fas fa-file-invoice-dollar"></i> محاسبه اقساط / چک</div>
+        <div class="info-note">
+          <i class="fas fa-info-circle"></i>
+          <span>مانده پس از پیش‌پرداخت با نرخ سود ماهانه ساده محاسبه و بین تعداد اقساط تقسیم می‌شود.</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label><i class="fas fa-coins"></i> مبلغ کل خرید (ریال)</label>
+            <input type="text" id="ins-total" data-type="int" value="" placeholder="مثال: 500,000,000" inputmode="decimal" class="num-input">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-hand-holding-usd"></i> پیش‌پرداخت (ریال)</label>
+            <input type="text" id="ins-down" data-type="int" value="0" placeholder="مثال: 100,000,000" inputmode="decimal" class="num-input">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-calendar"></i> تعداد اقساط (ماه)</label>
+            <input type="text" id="ins-count" data-type="int" value="6" placeholder="مثال: 6" inputmode="decimal" class="num-input">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-percent"></i> نرخ سود ماهانه (%)</label>
+            <input type="text" id="ins-rate" data-type="float" value="0" placeholder="مثال: 2" inputmode="decimal" class="num-input">
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;">
+        <button class="calc-btn" onclick="calcInstallment()" style="flex:1;"><i class="fas fa-calculator"></i> محاسبه اقساط</button>
+        <button class="calc-btn secondary" onclick="resetInstallment()" style="flex:0 0 auto;padding:10px 14px;font-size:14px;min-width:auto;width:auto;" title="ریست فرم"><i class="fas fa-rotate-left"></i></button>
+        </div>
+      </div>
+
+      <div id="res-installment" class="results">
+        <div class="card">
+          <div class="result-cards">
+            <div class="rcard"><div class="val" id="ins-remaining">—</div><div class="lbl">مانده پس از پیش‌پرداخت</div></div>
+            <div class="rcard"><div class="val" id="ins-interest">—</div><div class="lbl">مجموع سود اقساط</div></div>
+            <div class="rcard"><div class="val" id="ins-totalpay">—</div><div class="lbl">مبلغ کل قابل پرداخت</div></div>
+            <div class="rcard"><div class="val" id="ins-permonth">—</div><div class="lbl">مبلغ هر قسط</div></div>
+          </div>
+          <div class="final-box">
+            <span class="lbl"><i class="fas fa-file-invoice-dollar"></i> مبلغ هر قسط</span>
+            <span class="price" id="ins-final">—</span>
+          </div>
+          <div style="margin-top:16px;overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;">
+              <thead>
+                <tr style="background:var(--gold);color:#fff;">
+                  <th style="padding:9px 12px;text-align:right;font-size:13px;border-radius:6px 0 0 0;">شماره قسط</th>
+                  <th style="padding:9px 12px;text-align:right;font-size:13px;border-radius:0 6px 0 0;">مبلغ قسط</th>
+                </tr>
+              </thead>
+              <tbody id="ins-rows"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -1710,6 +1896,34 @@
       return Math.round(n).toLocaleString('fa-IR') + ' ریال';
     }
 
+    // ─── ذخیره و همگام‌سازی آخرین قیمت طلا بین تمام بخش‌ها ──────────
+    const GOLD_PRICE_SYNC_IDS = ['n-gprice', 'nmix-gprice', 'u-gprice', 'mix-gprice', 'm-gprice', 'p-gprice', 'rev-gprice', 'kc-gprice'];
+    const LAST_GOLD_PRICE_KEY = 'davar_last_gold_price';
+    const LAST_COIN_PRICE_KEY = 'davar_last_coin_price';
+
+    function saveLastGoldPrice(raw) {
+      try { localStorage.setItem(LAST_GOLD_PRICE_KEY, raw); } catch (e) {}
+    }
+    function loadLastGoldPrice() {
+      try { return localStorage.getItem(LAST_GOLD_PRICE_KEY) || ''; } catch (e) { return ''; }
+    }
+    function saveLastCoinPrice(raw) {
+      try { localStorage.setItem(LAST_COIN_PRICE_KEY, raw); } catch (e) {}
+    }
+    function loadLastCoinPrice() {
+      try { return localStorage.getItem(LAST_COIN_PRICE_KEY) || ''; } catch (e) { return ''; }
+    }
+    function syncGoldPriceFields(sourceId, raw) {
+      GOLD_PRICE_SYNC_IDS.forEach(id => {
+        if (id === sourceId) return;
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.value = raw ? addCommas(raw) : '';
+      });
+      if (typeof syncMixCalc === 'function' && document.getElementById('mix-gprice')) syncMixCalc();
+      if (typeof syncNmixCalc === 'function' && document.getElementById('nmix-gprice')) syncNmixCalc();
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.num-input').forEach(el => {
         el.addEventListener('input', onNumInput);
@@ -1721,6 +1935,38 @@
       // مقداردهی اولیه جدول چند عیار با یک ردیف پیش‌فرض
       addMixRow(750, '', '');
       addNmixRow(750, '', '');
+
+      // بارگذاری آخرین قیمت طلا و سکه ذخیره‌شده در مرورگر
+      const savedGoldPrice = loadLastGoldPrice();
+      if (savedGoldPrice) {
+        GOLD_PRICE_SYNC_IDS.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = addCommas(savedGoldPrice);
+        });
+      }
+      const savedCoinPrice = loadLastCoinPrice();
+      if (savedCoinPrice) {
+        const cEl = document.getElementById('c-price');
+        if (cEl) cEl.value = addCommas(savedCoinPrice);
+      }
+
+      // ذخیره و همگام‌سازی زنده‌ی قیمت طلا در تمام تب‌ها
+      GOLD_PRICE_SYNC_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('input', function() {
+          const raw = toEnglishDigits(this.value).replace(/[^0-9.]/g, '').replace(/,/g, '');
+          saveLastGoldPrice(raw);
+          syncGoldPriceFields(id, raw);
+        });
+      });
+      const cPriceEl = document.getElementById('c-price');
+      if (cPriceEl) {
+        cPriceEl.addEventListener('input', function() {
+          const raw = toEnglishDigits(this.value).replace(/[^0-9.]/g, '').replace(/,/g, '');
+          saveLastCoinPrice(raw);
+        });
+      }
 
       // sync nmix on price/percent changes
       ['nmix-gprice','nmix-making','nmix-profit'].forEach(function(id) {
@@ -1947,6 +2193,118 @@
       makePie('chartParsian', [baseEach, premEach],
         ['ارزش طلا', 'حق ضرب'],
         ['#386641', '#F35B04'], 'p-legend');
+    }
+
+    // ─── محاسبه معکوس (بودجه ← وزن) ──────────────────
+    function calcReverse() {
+      const gp = getVal('rev-gprice');
+      const budget = getVal('rev-budget');
+      const mk = getVal('rev-making');
+      const pr = getVal('rev-profit');
+      const taxEnabled = document.getElementById('cb-rev-tax').checked;
+      if (!gp || !budget) {
+        alert('لطفاً قیمت هر گرم طلا و بودجه مشتری را وارد کنید.');
+        return;
+      }
+      const makerAmt = gp * (mk / 100);
+      const afterMaking = gp + makerAmt;
+      const sellerAmt = afterMaking * (pr / 100);
+      const afterSeller = afterMaking + sellerAmt;
+      const tax = taxEnabled ? 0.10 * (makerAmt + sellerAmt) : 0;
+      const pricePerGram = afterSeller + tax;
+      const weight = pricePerGram > 0 ? budget / pricePerGram : 0;
+
+      document.getElementById('rev-pgram').textContent = fmt(pricePerGram);
+      document.getElementById('rev-mc').textContent = fmt(makerAmt);
+      document.getElementById('rev-sp').textContent = fmt(sellerAmt);
+      document.getElementById('rev-tx').textContent = taxEnabled ? fmt(tax) : 'محاسبه نشده';
+      document.getElementById('rev-final').textContent = fmtWeight(weight);
+      document.getElementById('res-rev').classList.add('show');
+    }
+
+    function resetReverse() {
+      setVal('rev-budget', '');
+      setVal('rev-making', '10');
+      setVal('rev-profit', '7');
+      const cb = document.getElementById('cb-rev-tax');
+      if (cb) cb.checked = false;
+      hideResults('res-rev');
+    }
+
+    // ─── مقایسه عیارها ────────────────────────────────
+    function calcKaratCompare() {
+      const gp = getVal('kc-gprice');
+      const wt = getVal('kc-weight');
+      if (!gp || !wt) {
+        alert('لطفاً قیمت پایه و وزن را وارد کنید.');
+        return;
+      }
+      const rows = KARAT_OPTIONS.map(k => {
+        const ratio = k.val / 750;
+        const pgram = gp * ratio;
+        const total = pgram * wt;
+        return { label: k.label, ratio, pgram, total, val: k.val };
+      });
+      const tbody = document.getElementById('kc-rows');
+      tbody.innerHTML = rows.map(r => `
+        <tr style="border-bottom:1px solid var(--border);${r.val === 750 ? 'background:var(--surface2);' : ''}">
+          <td style="padding:9px 12px;font-weight:700;color:var(--text);">${r.label}</td>
+          <td style="padding:9px 12px;color:var(--text-2);">${r.ratio.toFixed(4)}</td>
+          <td style="padding:9px 12px;color:var(--text);">${fmt(r.pgram)}</td>
+          <td style="padding:9px 12px;font-weight:800;color:var(--gold-bright);">${fmt(r.total)}</td>
+        </tr>
+      `).join('');
+      document.getElementById('res-karatcmp').classList.add('show');
+    }
+
+    function resetKaratCmp() {
+      setVal('kc-weight', '');
+      hideResults('res-karatcmp');
+      const tbody = document.getElementById('kc-rows');
+      if (tbody) tbody.innerHTML = '';
+    }
+
+    // ─── محاسبه اقساط / چک ────────────────────────────
+    function calcInstallment() {
+      const total = getVal('ins-total');
+      const down = getVal('ins-down');
+      const count = Math.max(1, Math.round(getVal('ins-count')) || 1);
+      const rate = getVal('ins-rate');
+      if (!total) {
+        alert('لطفاً مبلغ کل خرید را وارد کنید.');
+        return;
+      }
+      const remaining = Math.max(0, total - down);
+      // سود ساده ماهانه روی مانده اولیه، تقسیم‌شده بین تعداد اقساط
+      const interest = remaining * (rate / 100) * count;
+      const totalPay = remaining + interest;
+      const perMonth = totalPay / count;
+
+      document.getElementById('ins-remaining').textContent = fmt(remaining);
+      document.getElementById('ins-interest').textContent = fmt(interest);
+      document.getElementById('ins-totalpay').textContent = fmt(totalPay);
+      document.getElementById('ins-permonth').textContent = fmt(perMonth);
+      document.getElementById('ins-final').textContent = fmt(perMonth);
+
+      let rowsHtml = '';
+      for (let i = 1; i <= count; i++) {
+        rowsHtml += `<tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px 12px;color:var(--text);">قسط ${i.toLocaleString('fa-IR')}</td>
+          <td style="padding:8px 12px;font-weight:700;color:var(--gold-bright);">${fmt(perMonth)}</td>
+        </tr>`;
+      }
+      document.getElementById('ins-rows').innerHTML = rowsHtml;
+      document.getElementById('res-installment').classList.add('show');
+    }
+
+    function resetInstallment() {
+      setVal('ins-total', '');
+      setVal('ins-down', '0');
+      setVal('ins-count', '6');
+      setVal('ins-rate', '0');
+      hideResults('res-installment');
+      const rowsEl = document.getElementById('ins-rows');
+      if (rowsEl) rowsEl.innerHTML = '';
     }
 
     // ─── چند قطعه طلای نو با عیار متفاوت ────────────
