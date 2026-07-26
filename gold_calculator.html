@@ -1145,7 +1145,7 @@
         <div class="card-title"><i class="fas fa-gem"></i> محاسبه طلای نو</div>
         <div class="info-note">
           <i class="fas fa-info-circle"></i>
-          <span>فرمول گام‌به‌گام: <b>قیمت_پایه × (۱ + اجرت٪) = مرحله اول</b> — سپس <b>مرحله اول × (۱ + سود٪) = مرحله دوم</b> — مالیات ۱۰٪ روی جمع هر دو سود</span>
+          <span>فرمول گام‌به‌گام: <b>قیمت_پایه × (۱ + اجرت٪) = مرحله اول</b> — سپس <b>مرحله اول × (۱ + سود٪) = مرحله دوم</b> — مالیات (اختیاری) ۱۰٪ روی جمع هر دو سود</span>
         </div>
         <div class="form-grid">
           <div class="form-group">
@@ -1154,7 +1154,7 @@
           </div>
           <div class="form-group">
             <label><i class="fas fa-weight-scale"></i> وزن (گرم)</label>
-            <input type="text" id="n-weight" data-type="float" value="5.2" placeholder="مثال: 5.2" class="num-input">
+            <input type="text" id="n-weight" data-type="float" value="" placeholder="مثال: 5.2" class="num-input">
           </div>
           <div class="form-group">
             <label><i class="fas fa-percent"></i> درصد سود سازنده / اجرت (%)</label>
@@ -1165,6 +1165,14 @@
             <input type="text" id="n-profit" data-type="float" value="7" placeholder="مثال: 3" class="num-input">
           </div>
         </div>
+
+        <div style="margin:6px 0 16px;">
+          <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 14px;width:fit-content;">
+            <input type="checkbox" id="cb-n-tax" style="accent-color:var(--gold);width:16px;height:16px;">
+            <i class="fas fa-percent" style="color:var(--gold);"></i> احتساب مالیات ۱۰٪ در محاسبه
+          </label>
+        </div>
+
         <div style="display:flex;gap:10px;">
         <button class="calc-btn" onclick="calcNew()" style="flex:1;"><i class="fas fa-calculator"></i> محاسبه قیمت نهایی</button>
         <button class="calc-btn secondary" onclick="resetNew()" style="flex:0 0 auto;padding:10px 14px;font-size:14px;min-width:auto;width:auto;" title="ریست فرم"><i class="fas fa-rotate-left"></i></button>
@@ -1761,24 +1769,26 @@
       const wt = getVal('n-weight');
       const mk = getVal('n-making');
       const pr = getVal('n-profit');
-      // فرمول گام‌به‌گام: قیمت پایه × (1 + اجرت٪) × (1 + سود٪) + مالیات ۱۰٪ روی جمع هر دو سود
+      const taxEnabled = document.getElementById('cb-n-tax').checked;
+      // فرمول گام‌به‌گام: قیمت پایه × (1 + اجرت٪) × (1 + سود٪) + مالیات (اختیاری) ۱۰٪ روی جمع هر دو سود
       const makerAmt   = gp * (mk / 100);
       const afterMaking = gp + makerAmt;
       const sellerAmt  = afterMaking * (pr / 100);
       const afterSeller = afterMaking + sellerAmt;
-      const tax         = 0.10 * (makerAmt + sellerAmt);
+      const tax         = taxEnabled ? 0.10 * (makerAmt + sellerAmt) : 0;
       const pricePerGram = afterSeller + tax;
       const total = pricePerGram * wt;
       document.getElementById('n-raw').textContent = fmt(gp);
       document.getElementById('n-mc').textContent = fmt(makerAmt);
       document.getElementById('n-sp').textContent = fmt(sellerAmt);
-      document.getElementById('n-tx').textContent = fmt(tax);
+      document.getElementById('n-tx').textContent = taxEnabled ? fmt(tax) : 'محاسبه نشده';
       document.getElementById('n-pgram').textContent = fmt(pricePerGram);
       document.getElementById('n-final').textContent = fmt(total);
       document.getElementById('res-new').classList.add('show');
-      makePie('chartNew', [gp * wt, makerAmt * wt, sellerAmt * wt, tax * wt],
-        ['قیمت پایه', 'اجرت سازنده', 'سود فروشنده', 'مالیات'],
-        ['#3d7a4e', '#6B9FD4', '#6DC47B', '#E47D7D'], 'n-legend');
+      const pieData   = taxEnabled ? [gp * wt, makerAmt * wt, sellerAmt * wt, tax * wt] : [gp * wt, makerAmt * wt, sellerAmt * wt];
+      const pieLabels = taxEnabled ? ['قیمت پایه', 'اجرت سازنده', 'سود فروشنده', 'مالیات'] : ['قیمت پایه', 'اجرت سازنده', 'سود فروشنده'];
+      const pieColors = taxEnabled ? ['#3d7a4e', '#6B9FD4', '#6DC47B', '#E47D7D'] : ['#3d7a4e', '#6B9FD4', '#6DC47B'];
+      makePie('chartNew', pieData, pieLabels, pieColors, 'n-legend');
     }
 
     // ─── طلا به طلا (محاسبه با وزن به‌جای مبلغ) ─────────
@@ -2089,6 +2099,8 @@
       setVal('n-weight', '');
       setVal('n-making', '10');
       setVal('n-profit', '7');
+      const cb = document.getElementById('cb-n-tax');
+      if (cb) cb.checked = false;
       hideResults('res-new');
     }
 
