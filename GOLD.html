@@ -1100,6 +1100,74 @@
   }
 
 </style>
+<style id="ux-overrides">
+/* ── یکپارچه‌سازی فونت + بهبود UI/UX (بدون تغییر در منطق محاسبات) ── */
+:root{ --font:'Vazirmatn','Tahoma',system-ui,sans-serif; --text-3:#8d9d90; }
+[data-theme="light"]{ --text-3:#5d7262; }
+body{ --orange:var(--ember); --text-muted:var(--text-2); }  /* متغیرهایی که قبلاً تعریف نشده بودند */
+html,body,button,input,select,textarea,option,table,th,td,label{ font-family:var(--font); }
+*{ letter-spacing:normal !important; text-transform:none !important; }  /* حروف فارسی نباید از هم جدا شوند */
+body{ font-size:16px; line-height:1.7; font-variant-numeric:tabular-nums; }
+:focus-visible{ outline:2px solid var(--gold-bright); outline-offset:2px; }
+.form-group input:focus-visible,.form-group select:focus-visible{ outline:none; }
+
+/* نوار بالا و منو */
+.top-bar h1{ font-size:18px; font-weight:800; }
+.top-bar p{ font-size:12.5px; }
+.sidebar{ width:176px; }
+.sidebar-title{ font-size:12px; }
+.tab-btn{ gap:6px; }
+.tab-btn .tab-icon{ font-size:20px; line-height:1; color:var(--text-3); }
+.tab-btn .tab-label{ font-size:13.5px; }
+.tab-btn.active .tab-icon{ color:#fff; transform:none; }
+
+/* کارت‌ها و فرم */
+.card{ padding:26px 30px; }
+.card:hover{ border-color:var(--border); }
+.card-title{ font-size:17px; font-weight:800; padding-bottom:16px; margin-bottom:20px; }
+.info-note{ font-size:14px; }
+.section-label,.karat-label,.chart-title{ font-size:13px; }
+.form-group label{ font-size:13.5px; font-weight:600; color:var(--text-2); }
+.form-group input,.form-group select{ font-size:17px; font-weight:600; min-height:48px; }
+.form-group input::placeholder{ font-size:14px; font-weight:400; }
+
+/* دکمه محاسبه + راهنمای کلید Enter (فقط روی دسکتاپ) */
+.calc-btn{ font-size:16px; font-weight:800; min-height:50px; }
+.calc-btn::after,.calc-btn:hover::after{ content:none; }
+@media (hover:hover) and (pointer:fine){
+  .calc-btn:not(.secondary)::after,.calc-btn:not(.secondary):hover::after{
+    content:'Enter'; position:static; inset:auto; transform:none; transition:none;
+    background:rgba(255,255,255,.18); border-radius:6px; padding:1px 8px; font-size:12px; font-weight:600;
+  }
+}
+
+/* انتخاب عیار/سکه: قابل دسترسی با کیبورد و متن خوانا روی حالت فعال */
+.karat-btn{ position:relative; font-size:14px; min-height:46px; justify-content:center; }
+.karat-btn input[type="radio"]{ display:block; position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:pointer; }
+.karat-btn.active{ color:#fff; }
+.karat-btn:focus-within{ outline:2px solid var(--gold-bright); outline-offset:2px; }
+.karat-btn .coin-name{ font-size:14px; }
+.karat-btn .coin-sub{ font-size:12px; }
+.karat-info{ font-size:13.5px; }
+
+/* نتایج: عدد نهایی برجسته‌تر */
+.rcard:hover{ transform:none; }
+.rcard .val{ font-size:16px; }
+.rcard .lbl{ font-size:12.5px; color:var(--text-2); }
+.final-box{ padding:22px 26px; border-color:var(--gold); }
+.final-box .lbl{ font-size:15px; }
+.final-box .price{ font-size:30px; }
+.legend{ font-size:13px; }
+
+@media (max-width:700px){
+  .card{ padding:18px 16px; }
+  .final-box .price{ font-size:24px; }
+  .sidebar .tab-btn .tab-label{ font-size:11px; }
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation:none !important; transition:none !important; }
+}
+</style>
 </head>
 <body data-theme="dark">
 
@@ -1120,44 +1188,36 @@
     <nav class="sidebar" id="mainSidebar">
       <div class="sidebar-title">منو</div>
       <button class="tab-btn active" onclick="switchTab('new',this)">
-        <span class="tab-icon">✨</span>
+        <span class="tab-icon"><i class="fas fa-gem"></i></span>
         <span class="tab-label">طلای نو</span>
       </button>
       <button class="tab-btn" onclick="switchTab('mixed-new',this)">
-        <span class="tab-icon">🔢</span>
+        <span class="tab-icon"><i class="fas fa-layer-group"></i></span>
         <span class="tab-label">چند عیار نو</span>
       </button>
       <button class="tab-btn" onclick="switchTab('g2g',this)">
-        <span class="tab-icon">🔁</span>
+        <span class="tab-icon"><i class="fas fa-arrows-rotate"></i></span>
         <span class="tab-label">طلا به طلا</span>
       </button>
       <button class="tab-btn" onclick="switchTab('used',this)">
-        <span class="tab-icon">🔄</span>
+        <span class="tab-icon"><i class="fas fa-exchange-alt"></i></span>
         <span class="tab-label">دست دوم</span>
       </button>
       <button class="tab-btn" onclick="switchTab('melted',this)">
-        <span class="tab-icon">💧</span>
+        <span class="tab-icon"><i class="fas fa-water"></i></span>
         <span class="tab-label">آبشده</span>
       </button>
-      <button class="tab-btn" onclick="switchTab('coin',this)">
-        <span class="tab-icon">🪙</span>
-        <span class="tab-label">سکه بهار</span>
-      </button>
       <button class="tab-btn" onclick="switchTab('parsian',this)">
-        <span class="tab-icon">🏅</span>
+        <span class="tab-icon"><i class="fas fa-medal"></i></span>
         <span class="tab-label">پارسیان</span>
       </button>
       <button class="tab-btn" onclick="switchTab('rev',this)">
-        <span class="tab-icon">🎯</span>
+        <span class="tab-icon"><i class="fas fa-bullseye"></i></span>
         <span class="tab-label">محاسبه معکوس</span>
       </button>
       <button class="tab-btn" onclick="switchTab('karatcmp',this)">
-        <span class="tab-icon">⚖️</span>
+        <span class="tab-icon"><i class="fas fa-scale-balanced"></i></span>
         <span class="tab-label">مقایسه عیار</span>
-      </button>
-      <button class="tab-btn" onclick="switchTab('installment',this)">
-        <span class="tab-icon">🧾</span>
-        <span class="tab-label">قسط / چک</span>
       </button>
     </nav>
 
@@ -1362,6 +1422,7 @@
           <div style="font-size:15px;color:var(--text-muted);margin-bottom:10px;">عیار طلای خریداری‌شده:</div>
           <div class="karat-group">
             <label class="karat-btn active"><input type="radio" name="u-karat" value="750" checked> عیار ۱۸ (۷۵۰)</label>
+            <label class="karat-btn"><input type="radio" name="u-karat" value="745"> عیار ۷۴۵</label>
             <label class="karat-btn"><input type="radio" name="u-karat" value="740"> عیار ۷۴۰</label>
             <label class="karat-btn"><input type="radio" name="u-karat" value="735"> عیار ۷۳۵</label>
             <label class="karat-btn"><input type="radio" name="u-karat" value="730"> عیار ۷۳۰</label>
@@ -1494,80 +1555,6 @@
           <div class="final-box">
             <span class="lbl"><i class="fas fa-coins"></i> قیمت نهایی</span>
             <span class="price" id="m-final">—</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB: سکه بهار -->
-    <div id="tab-coin" class="panel">
-      <div class="card">
-        <div class="card-title"><i class="fas fa-coins"></i> سکه بهار آزادی</div>
-        <div class="info-note">
-          <i class="fas fa-info-circle"></i>
-          عیار ۲۲ (۹۰۰) — ضرب بانک مرکزی — قیمت بر اساس بازار روز
-        </div>
-
-        <div style="margin-bottom:16px;">
-          <div style="font-size:15px;color:var(--text-muted);margin-bottom:10px;">نوع سکه:</div>
-          <div class="karat-group">
-            <label class="karat-btn active">
-              <input type="radio" name="coin-type" value="8.133" checked>
-              <span class="coin-name">تمام سکه</span>
-              <span class="coin-sub">۸.۱۳۳ گرم</span>
-            </label>
-            <label class="karat-btn">
-              <input type="radio" name="coin-type" value="4.066">
-              <span class="coin-name">نیم سکه</span>
-              <span class="coin-sub">۴.۰۶۶ گرم</span>
-            </label>
-            <label class="karat-btn">
-              <input type="radio" name="coin-type" value="2.033">
-              <span class="coin-name">ربع سکه</span>
-              <span class="coin-sub">۲.۰۳۳ گرم</span>
-            </label>
-            <label class="karat-btn">
-              <input type="radio" name="coin-type" value="1.01">
-              <span class="coin-name">سکه گرمی</span>
-              <span class="coin-sub">۱.۰۱۰ گرم</span>
-            </label>
-          </div>
-          <div id="c-coin-info" class="karat-info">
-            نوع انتخابی: <b id="c-coin-txt">تمام سکه — ۸.۱۳۳ گرم — عیار ۹۰۰</b>
-          </div>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-group">
-            <label><i class="fas fa-tag"></i> قیمت بازار هر سکه (تومان)</label>
-            <input type="text" id="c-price" data-type="int" value="850,000,000" placeholder="مثال: 850,000,000" inputmode="decimal" class="num-input">
-          </div>
-          <div class="form-group">
-            <label><i class="fas fa-hashtag"></i> تعداد</label>
-            <input type="text" id="c-count" data-type="int" value="3" placeholder="مثال: 3" inputmode="decimal" class="num-input">
-          </div>
-          <div class="form-group">
-            <label><i class="fas fa-percent"></i> کارمزد (%)</label>
-            <input type="text" id="c-comm" data-type="float" value="0.5" placeholder="مثال: 0.5" inputmode="decimal" class="num-input">
-          </div>
-        </div>
-        <div style="display:flex;gap:10px;">
-        <button class="calc-btn" onclick="calcCoin()" style="flex:1;"><i class="fas fa-calculator"></i> محاسبه قیمت کل</button>
-        <button class="calc-btn secondary" onclick="resetCoin()" style="flex:0 0 auto;padding:10px 14px;font-size:14px;min-width:auto;width:auto;" title="ریست فرم"><i class="fas fa-rotate-left"></i></button>
-        </div>
-      </div>
-
-      <div id="res-coin" class="results">
-        <div class="card">
-          <div class="result-cards">
-            <div class="rcard"><div class="val" id="c-type-lbl">—</div><div class="lbl">نوع سکه</div></div>
-            <div class="rcard"><div class="val" id="c-weight-lbl">—</div><div class="lbl">وزن هر سکه</div></div>
-            <div class="rcard"><div class="val" id="c-base">—</div><div class="lbl">قیمت پایه کل</div></div>
-            <div class="rcard"><div class="val" id="c-fee">—</div><div class="lbl">کارمزد</div></div>
-          </div>
-          <div class="final-box">
-            <span class="lbl"><i class="fas fa-coins"></i> قیمت کل</span>
-            <span class="price" id="c-final">—</span>
           </div>
         </div>
       </div>
@@ -1751,64 +1738,6 @@
       </div>
     </div>
 
-    <!-- TAB: محاسبه اقساط / چک -->
-    <div id="tab-installment" class="panel">
-      <div class="card">
-        <div class="card-title"><i class="fas fa-file-invoice-dollar"></i> محاسبه اقساط / چک</div>
-        <div class="info-note">
-          <i class="fas fa-info-circle"></i>
-          <span>مانده پس از پیش‌پرداخت با نرخ سود ماهانه ساده محاسبه و بین تعداد اقساط تقسیم می‌شود.</span>
-        </div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label><i class="fas fa-coins"></i> مبلغ کل خرید (تومان)</label>
-            <input type="text" id="ins-total" data-type="int" value="" placeholder="مثال: 50,000,000" inputmode="decimal" class="num-input">
-          </div>
-          <div class="form-group">
-            <label><i class="fas fa-hand-holding-usd"></i> پیش‌پرداخت (تومان)</label>
-            <input type="text" id="ins-down" data-type="int" value="0" placeholder="مثال: 10,000,000" inputmode="decimal" class="num-input">
-          </div>
-          <div class="form-group">
-            <label><i class="fas fa-calendar"></i> تعداد اقساط (ماه)</label>
-            <input type="text" id="ins-count" data-type="int" value="6" placeholder="مثال: 6" inputmode="decimal" class="num-input">
-          </div>
-          <div class="form-group">
-            <label><i class="fas fa-percent"></i> نرخ سود ماهانه (%)</label>
-            <input type="text" id="ins-rate" data-type="float" value="0" placeholder="مثال: 2" inputmode="decimal" class="num-input">
-          </div>
-        </div>
-        <div style="display:flex;gap:10px;">
-        <button class="calc-btn" onclick="calcInstallment()" style="flex:1;"><i class="fas fa-calculator"></i> محاسبه اقساط</button>
-        <button class="calc-btn secondary" onclick="resetInstallment()" style="flex:0 0 auto;padding:10px 14px;font-size:14px;min-width:auto;width:auto;" title="ریست فرم"><i class="fas fa-rotate-left"></i></button>
-        </div>
-      </div>
-
-      <div id="res-installment" class="results">
-        <div class="card">
-          <div class="result-cards">
-            <div class="rcard"><div class="val" id="ins-remaining">—</div><div class="lbl">مانده پس از پیش‌پرداخت</div></div>
-            <div class="rcard"><div class="val" id="ins-interest">—</div><div class="lbl">مجموع سود اقساط</div></div>
-            <div class="rcard"><div class="val" id="ins-totalpay">—</div><div class="lbl">مبلغ کل قابل پرداخت</div></div>
-            <div class="rcard"><div class="val" id="ins-permonth">—</div><div class="lbl">مبلغ هر قسط</div></div>
-          </div>
-          <div class="final-box">
-            <span class="lbl"><i class="fas fa-file-invoice-dollar"></i> مبلغ هر قسط</span>
-            <span class="price" id="ins-final">—</span>
-          </div>
-          <div style="margin-top:16px;overflow-x:auto;">
-            <table style="width:100%;border-collapse:collapse;">
-              <thead>
-                <tr style="background:var(--gold);color:#fff;">
-                  <th style="padding:9px 12px;text-align:right;font-size:13px;border-radius:6px 0 0 0;">شماره قسط</th>
-                  <th style="padding:9px 12px;text-align:right;font-size:13px;border-radius:0 6px 0 0;">مبلغ قسط</th>
-                </tr>
-              </thead>
-              <tbody id="ins-rows"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
 
 
   </div>
@@ -1899,19 +1828,12 @@
     // ─── ذخیره و همگام‌سازی آخرین قیمت طلا بین تمام بخش‌ها ──────────
     const GOLD_PRICE_SYNC_IDS = ['n-gprice', 'nmix-gprice', 'u-gprice', 'mix-gprice', 'm-gprice', 'p-gprice', 'rev-gprice', 'kc-gprice'];
     const LAST_GOLD_PRICE_KEY = 'davar_last_gold_price';
-    const LAST_COIN_PRICE_KEY = 'davar_last_coin_price';
 
     function saveLastGoldPrice(raw) {
       try { localStorage.setItem(LAST_GOLD_PRICE_KEY, raw); } catch (e) {}
     }
     function loadLastGoldPrice() {
       try { return localStorage.getItem(LAST_GOLD_PRICE_KEY) || ''; } catch (e) { return ''; }
-    }
-    function saveLastCoinPrice(raw) {
-      try { localStorage.setItem(LAST_COIN_PRICE_KEY, raw); } catch (e) {}
-    }
-    function loadLastCoinPrice() {
-      try { return localStorage.getItem(LAST_COIN_PRICE_KEY) || ''; } catch (e) { return ''; }
     }
     function syncGoldPriceFields(sourceId, raw) {
       GOLD_PRICE_SYNC_IDS.forEach(id => {
@@ -1944,12 +1866,6 @@
           if (el) el.value = addCommas(savedGoldPrice);
         });
       }
-      const savedCoinPrice = loadLastCoinPrice();
-      if (savedCoinPrice) {
-        const cEl = document.getElementById('c-price');
-        if (cEl) cEl.value = addCommas(savedCoinPrice);
-      }
-
       // ذخیره و همگام‌سازی زنده‌ی قیمت طلا در تمام تب‌ها
       GOLD_PRICE_SYNC_IDS.forEach(id => {
         const el = document.getElementById(id);
@@ -1960,14 +1876,6 @@
           syncGoldPriceFields(id, raw);
         });
       });
-      const cPriceEl = document.getElementById('c-price');
-      if (cPriceEl) {
-        cPriceEl.addEventListener('input', function() {
-          const raw = toEnglishDigits(this.value).replace(/[^0-9.]/g, '').replace(/,/g, '');
-          saveLastCoinPrice(raw);
-        });
-      }
-
       // sync nmix on price/percent changes
       ['nmix-gprice','nmix-making','nmix-profit'].forEach(function(id) {
         document.getElementById(id).addEventListener('input', function() {
@@ -2092,18 +2000,6 @@
         });
       });
 
-      document.querySelectorAll('input[name="coin-type"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-          document.querySelectorAll('input[name="coin-type"]').forEach(r =>
-            r.parentElement.classList.remove('active'));
-          this.parentElement.classList.add('active');
-          const nameEl = this.parentElement.querySelector('.coin-name');
-          const subEl = this.parentElement.querySelector('.coin-sub');
-          document.getElementById('c-coin-txt').textContent =
-            `${nameEl.textContent} — ${subEl.textContent} — عیار ۹۰۰`;
-        });
-      });
-
       document.querySelectorAll('input[name="par-wt"]').forEach(radio => {
         radio.addEventListener('change', function() {
           document.querySelectorAll('input[name="par-wt"]').forEach(r =>
@@ -2120,10 +2016,6 @@
     function getSelectedKarat() {
       const r = document.querySelector('input[name="u-karat"]:checked');
       return r ? parseInt(r.value) : 750;
-    }
-    function getSelectedCoinWeight() {
-      const r = document.querySelector('input[name="coin-type"]:checked');
-      return r ? parseFloat(r.value) : 8.133;
     }
     function getSelectedParWt() {
       const r = document.querySelector('input[name="par-wt"]:checked');
@@ -2154,24 +2046,6 @@
       document.getElementById('m-fee').textContent = fmt(fee);
       document.getElementById('m-final').textContent = fmt(final);
       document.getElementById('res-melted').classList.add('show');
-    }
-
-    // ─── سکه بهار ──────────────────────────────────
-    const COIN_LABELS = { '8.133': 'تمام سکه', '4.066': 'نیم سکه', '2.033': 'ربع سکه', '1.01': 'سکه گرمی' };
-    function calcCoin() {
-      const cp = getVal('c-price');
-      const cnt = getVal('c-count');
-      const cm = getVal('c-comm');
-      const wt = getSelectedCoinWeight();
-      const base = cp * cnt;
-      const fee = base * cm / 100;
-      const final = base + fee;
-      document.getElementById('c-type-lbl').textContent = COIN_LABELS[wt.toString()] || '—';
-      document.getElementById('c-weight-lbl').textContent = wt + ' گرم';
-      document.getElementById('c-base').textContent = fmt(base);
-      document.getElementById('c-fee').textContent = fmt(fee);
-      document.getElementById('c-final').textContent = fmt(final);
-      document.getElementById('res-coin').classList.add('show');
     }
 
     // ─── سکه پارسیان ──────────────────────────────
@@ -2262,49 +2136,6 @@
       hideResults('res-karatcmp');
       const tbody = document.getElementById('kc-rows');
       if (tbody) tbody.innerHTML = '';
-    }
-
-    // ─── محاسبه اقساط / چک ────────────────────────────
-    function calcInstallment() {
-      const total = getVal('ins-total');
-      const down = getVal('ins-down');
-      const count = Math.max(1, Math.round(getVal('ins-count')) || 1);
-      const rate = getVal('ins-rate');
-      if (!total) {
-        alert('لطفاً مبلغ کل خرید را وارد کنید.');
-        return;
-      }
-      const remaining = Math.max(0, total - down);
-      // سود ساده ماهانه روی مانده اولیه، تقسیم‌شده بین تعداد اقساط
-      const interest = remaining * (rate / 100) * count;
-      const totalPay = remaining + interest;
-      const perMonth = totalPay / count;
-
-      document.getElementById('ins-remaining').textContent = fmt(remaining);
-      document.getElementById('ins-interest').textContent = fmt(interest);
-      document.getElementById('ins-totalpay').textContent = fmt(totalPay);
-      document.getElementById('ins-permonth').textContent = fmt(perMonth);
-      document.getElementById('ins-final').textContent = fmt(perMonth);
-
-      let rowsHtml = '';
-      for (let i = 1; i <= count; i++) {
-        rowsHtml += `<tr style="border-bottom:1px solid var(--border);">
-          <td style="padding:8px 12px;color:var(--text);">قسط ${i.toLocaleString('fa-IR')}</td>
-          <td style="padding:8px 12px;font-weight:700;color:var(--gold-bright);">${fmt(perMonth)}</td>
-        </tr>`;
-      }
-      document.getElementById('ins-rows').innerHTML = rowsHtml;
-      document.getElementById('res-installment').classList.add('show');
-    }
-
-    function resetInstallment() {
-      setVal('ins-total', '');
-      setVal('ins-down', '0');
-      setVal('ins-count', '6');
-      setVal('ins-rate', '0');
-      hideResults('res-installment');
-      const rowsEl = document.getElementById('ins-rows');
-      if (rowsEl) rowsEl.innerHTML = '';
     }
 
     // ─── چند قطعه طلای نو با عیار متفاوت ────────────
@@ -2484,12 +2315,6 @@
       hideResults('res-melted');
     }
 
-    function resetCoin() {
-      setVal('c-count', '');
-      setVal('c-comm', '0.5');
-      hideResults('res-coin');
-    }
-
     function resetParsian() {
       setVal('p-count', '');
       setVal('p-prem', '5');
@@ -2508,11 +2333,13 @@
       { val: 708, label: '۱۷ عیار (۷۰۸)' },
       { val: 585, label: '۱۴ عیار (۵۸۵)' },
     ];
+    // عیارهای بخش دست دوم (شامل ۷۴۵)
+    const USED_KARAT_OPTIONS = [...KARAT_OPTIONS.slice(0, 4), { val: 745, label: 'عیار ۷۴۵' }, ...KARAT_OPTIONS.slice(4)];
 
     let mixRowCount = 0;
 
-    function buildKaratOptions(selectedVal) {
-      return KARAT_OPTIONS.map(k =>
+    function buildKaratOptions(selectedVal, list = KARAT_OPTIONS) {
+      return list.map(k =>
         `<option value="${k.val}" ${k.val === selectedVal ? 'selected' : ''}>${k.label}</option>`
       ).join('');
     }
@@ -2535,7 +2362,7 @@
           <select onchange="syncMixCalc()"
             style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;
                    font-size:15px;font-family:inherit;color:var(--text);background:var(--input-bg);text-align:right;">
-            ${buildKaratOptions(karat)}
+            ${buildKaratOptions(karat, USED_KARAT_OPTIONS)}
           </select>
         </td>
         <td style="padding:8px 10px;">
@@ -2631,5 +2458,54 @@
   </script>
   </div>
   </div>
+<script>
+/* ── کیبورد و تجربه کاربری (بدون دخالت در توابع محاسبه) ── */
+(function () {
+  // Enter در هر فیلد = دکمه اصلی همان کارت (محاسبه) + اسکرول نرم به نتیجه
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' || e.isComposing || e.defaultPrevented) return;
+    var t = e.target;
+    if (!t || !t.closest || !t.closest('.panel.active')) return;
+    if (t.tagName === 'BUTTON' || t.tagName === 'TEXTAREA') return;
+    var card = t.closest('.card');
+    var btn = card && card.querySelector('.calc-btn:not(.secondary)');
+    if (!btn) return;
+    e.preventDefault();
+    btn.click();
+    requestAnimationFrame(function () {
+      var res = card.nextElementSibling;
+      if (res && res.classList.contains('results') && res.classList.contains('show')) {
+        res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  });
+
+  // دکمه کیبورد موبایل: «برو» به‌جای خط جدید
+  document.addEventListener('focusin', function (e) {
+    var t = e.target;
+    if (t && t.tagName === 'INPUT' && t.type === 'text') t.setAttribute('enterkeyhint', 'go');
+  });
+
+  // فوکوس خودکار روی اولین فیلد خالی (فقط دسکتاپ، تا کیبورد موبایل ناخواسته باز نشود)
+  var desktop = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  function focusFirst(panel) {
+    if (!desktop || !panel) return;
+    var inputs = Array.prototype.slice.call(panel.querySelectorAll('input[type="text"]'));
+    var target = inputs.filter(function (i) { return !i.value; })[0] || inputs[0];
+    if (target) target.focus({ preventScroll: true });
+  }
+  var origSwitch = window.switchTab;
+  window.switchTab = function (name, btn) {
+    origSwitch(name, btn);
+    focusFirst(document.getElementById('tab-' + name));
+  };
+  document.addEventListener('DOMContentLoaded', function () {
+    focusFirst(document.querySelector('.panel.active'));
+  });
+
+  // فونت نمودارها هم با بقیه برنامه یکی شود
+  if (window.Chart) Chart.defaults.font.family = "'Vazirmatn','Tahoma',system-ui,sans-serif";
+})();
+</script>
 </body>
 </html>
